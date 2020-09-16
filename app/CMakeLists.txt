@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18.2)
+cmake_minimum_required(VERSION 3.15)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -17,10 +17,10 @@ include_directories(src)
 add_compile_options(
         -std=c++17
 #        -Wdev
-        # -Werror
-        # -Wall
-        # -Wextra
-        # -Wpedantic
+         -Werror
+         -Wall
+         -Wextra
+         -Wpedantic
 #        -Wno-unused-parameter
 )
 
