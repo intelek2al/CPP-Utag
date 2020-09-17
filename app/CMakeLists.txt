@@ -10,9 +10,11 @@ find_library(TAGLIB taglib)
 
 include_directories(../3dparty/taglib/taglib/)
 include_directories(../3dparty/taglib/taglib/mpeg/)
+include_directories(../3dparty/taglib/taglib/mpeg/id3v2/)
 include_directories(../3dparty/taglib/taglib/frames/)
 include_directories(../3dparty/taglib/taglib/toolkit)
 include_directories(../build/3dparty/taglib/)
+include_directories(../cmake-build-debug/3dparty/taglib/)
 
 include_directories(src)
 
