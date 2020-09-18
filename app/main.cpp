@@ -5,6 +5,8 @@
 #include "tag_functions.h"
 #include "dialog.h"
 
+//#include "../../"
+
 #include "../../taglib/taglib/tag.h"
 #include <../taglib/fileref.h>
 #include <../taglib/mpeg/id3v2/id3v2tag.h>
@@ -35,10 +37,12 @@ using std::endl;
 int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
-    QLabel label("Hello world !");
-    label.setStyleSheet("QLabel:hover { color: rgb(60, 179, 113)}");
+
+    Dialog window;
+//    QLabel label("Hello world !");
+//    label.setStyleSheet("QLabel:hover { color: rgb(60, 179, 113)}");
 //    Dialog ()
-    label.show();
+    window.show();
 
 //    DIR *dp;
 //    struct dirent *dirp;
@@ -50,10 +54,9 @@ int main(int argc, char *argv[]) {
 //    Qfile file;
 //    struct stat buf;
 
-/*
-    if ((dp = opendir(argv[1])) == NULL) {
-        std::cerr << "error open folder" << endl;
-    }
+//    if ((dp = opendir(argv[1])) == NULL) {
+//        std::cerr << "error open folder" << endl;
+//    }
 //    while((dirp = readdir(dp)) != NULL) {
 
     modify_tag(argv[1]);
@@ -104,17 +107,13 @@ int main(int argc, char *argv[]) {
             cout << "channels    - " << properties->channels() << endl;
             cout << "length      - " << minutes << ":" << std::setfill('0') << std::setw(2) << seconds << endl;
         }
-*/
 
-    cout << "-- LYRICS --" << endl;
-    load_lyrics(argv[1]);
+//    cout << "-- LYRICS --" << endl;
+//    load_lyrics(argv[1]);
 
-//    cout << "-- COVER --" << endl;
-//    load_cover(argv[1]);
+    cout << "-- COVER --" << endl;
+    load_cover(argv[1]);
         cout << "========================== end ===========================" << endl;
-//    }
-
-
 
     return app.exec();
 }
