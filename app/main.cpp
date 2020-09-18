@@ -15,9 +15,12 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
-//#include <QtGui>
-//#include <QtCore>
-//#include <QFile>
+#include <QtGui>
+#include <QtCore>
+#include <QFile>
+#include <QApplication>
+#include <QLabel>
+#include <zconf.h>
 //#include <QMediaMetaData>
 
 using std::cout;
@@ -143,15 +146,22 @@ void modify_tag(char *file_name) {
 }
 
 int main(int argc, char *argv[]) {
-    DIR *dp;
+
+    QApplication app(argc, argv);
+    QLabel label("Hello world !");
+    label.show();
+
+//    DIR *dp;
 //    struct dirent *dirp;
 
-    if (argc != 2) {
-        return 1;
-    }
+//    if (argc != 2) {
+//        return 1;
+//    }
 
 //    Qfile file;
 //    struct stat buf;
+
+/*
     if ((dp = opendir(argv[1])) == NULL) {
         std::cerr << "error open folder" << endl;
     }
@@ -214,7 +224,11 @@ int main(int argc, char *argv[]) {
         cout << "========================== end ===========================" << endl;
 //    }
 
-    return 0;
+ */
+
+    sleep(500);
+
+    return app.exec();
 }
 
 /*
