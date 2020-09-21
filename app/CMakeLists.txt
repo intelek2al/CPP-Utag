@@ -10,8 +10,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_subdirectory(src)
-
 find_library(TAGLIB taglib)
 
 #set(Qt5Core_DIR "~/Qt/5.15.1/clang_64/lib/cmake/Qt5Core/")
@@ -84,3 +82,6 @@ target_link_libraries(utag tag)
 target_link_libraries(utag Qt5::Core)
 target_link_libraries(utag Qt5::Widgets)
 target_link_libraries(utag Qt5::Quick)
+
+add_subdirectory(src)
+

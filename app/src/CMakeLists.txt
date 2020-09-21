@@ -6,6 +6,12 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+# find_library(TAGLIB taglib)
+
+# include_directories(../../3dparty/taglib/taglib/)
+# include_directories(../../3dparty/taglib/taglib/toolkit)
+# include_directories(../../build/3dparty/taglib/)
+
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)

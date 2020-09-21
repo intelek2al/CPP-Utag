@@ -6,6 +6,7 @@
 #define UTAG_TAG_FUNCTIONS_H
 
 #include <iostream>
+#include <iomanip>
 
 #include "../../3dparty/taglib/taglib/toolkit/tpropertymap.h"
 #include "../../3dparty/taglib/taglib/fileref.h"
@@ -40,12 +41,12 @@ void load_lyrics(char *file_name);
 
 void load_cover(char *file_name);
 
-
-
-void modify_tag(char *file_name) {
+void modify_tag(char *file_name)
+{
     TagLib::FileRef f(file_name);
 
-    if (!f.isNull() && f.tag()) {
+    if (!f.isNull() && f.tag())
+    {
         TagLib::Tag *tag = f.tag();
         tag->setArtist("MOBY_2");
         // "Tiesto feat. GALXARA"
@@ -53,12 +54,13 @@ void modify_tag(char *file_name) {
     f.save();
 }
 
-
-void read_tags(char *file_name) {
+void read_tags(char *file_name)
+{
     cout << "============== \"" << file_name << "\" =======================" << endl;
     TagLib::FileRef f(file_name);
 
-    if (!f.isNull() && f.tag()) {
+    if (!f.isNull() && f.tag())
+    {
 
         TagLib::Tag *tag = f.tag();
 
@@ -74,21 +76,26 @@ void read_tags(char *file_name) {
         TagLib::PropertyMap tags = f.file()->properties();
 
         unsigned int longest = 0;
-        for (TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i) {
-            if (i->first.size() > longest) {
+        for (TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i)
+        {
+            if (i->first.size() > longest)
+            {
                 longest = i->first.size();
             }
         }
 
         cout << "-- TAG (properties) --" << endl;
-        for (TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i) {
-            for (TagLib::StringList::ConstIterator j = i->second.begin(); j != i->second.end(); ++j) {
+        for (TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i)
+        {
+            for (TagLib::StringList::ConstIterator j = i->second.begin(); j != i->second.end(); ++j)
+            {
                 cout << std::left << std::setw(longest) << i->first << " - " << '"' << *j << '"' << endl;
             }
         }
     }
 
-    if (!f.isNull() && f.audioProperties()) {
+    if (!f.isNull() && f.audioProperties())
+    {
 
         TagLib::AudioProperties *properties = f.audioProperties();
 
@@ -101,9 +108,6 @@ void read_tags(char *file_name) {
         cout << "channels    - " << properties->channels() << endl;
         cout << "length      - " << minutes << ":" << std::setfill('0') << std::setw(2) << seconds << endl;
     }
-
-
 }
-
 
 #endif //UTAG_TAG_FUNCTIONS_H
