@@ -25,7 +25,7 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
 
-set(SOURCES main.cpp src/mainwindow.cpp)
+set(SOURCES main.cpp src/mainwindow.cpp src/musictablemodel.cpp)
 set(HEADERS src/mainwindow.h)
 set(UI src/mainwindow.ui)
 
