@@ -6,15 +6,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-set (headers
-        tag_functions.h
-        )
+# set (headers tag_functions.h)
 
-set(sources
-        tag_functions.cpp
-        )
+# set(sources tag_functions.cpp)
 
 
-add_library(src
-         STATIC ${headers} ${sources})
+add_library(src STATIC ${headers} ${sources})
 
