@@ -10,25 +10,14 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_subdirectory(src)
-
 find_library(TAGLIB taglib)
-
-#set(Qt5Core_DIR "~/Qt/5.15.1/clang_64/lib/cmake/Qt5Core/")
-
-#find_package(QT NAMES Qt6 Qt5 COMPONENTS Qt5Core REQUIRED)
-#find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Qt5Core REQUIRED)
-
-#find_package(Qt5 COMPONENTS Qt5Core REQUIRED)
-#find_package(Qt5 COMPONENTS Qt5Widgets REQUIRED)
-#find_package(Qt5 COMPONENTS Qt5Quick REQUIRED)
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
 
-set(SOURCES main.cpp src/mainwindow.cpp)
-set(HEADERS src/mainwindow.h)
+set(SOURCES main.cpp src/mainwindow.cpp src/tag_functions.cpp)
+set(HEADERS src/mainwindow.h src/tag_functions.h)
 set(UI src/mainwindow.ui)
 
 add_executable(utag ${SOURCES} ${HEADERS} ${UI})
@@ -36,11 +25,6 @@ add_executable(utag ${SOURCES} ${HEADERS} ${UI})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#set(Qt5Core_DIR "~/.brew/Cellar/qt/5.15.1/lib/cmake/Qt5Core")
-#set(Qt5_DIR "~/.brew/Cellar/qt/5.15.1/lib/cmake/Qt5")
-
-#set(CMAKE_PREFIX_PATH "~/.brew/Cellar/qt/5.15.1/lib/cmake/Qt5Core")
-#target_include_directories(utag INTERFACE "../3dparty/taglib/taglib/")
 
 include_directories(../3dparty/taglib/taglib/)
 include_directories(../3dparty/taglib/taglib/mpeg/)
@@ -59,13 +43,38 @@ add_compile_options(
         -std=c++17
 #        -Wdev
          -Werror
-
          -Wall
          -Wextra
          -Wpedantic
 
 #        -Wno-unused-parameter
 )
+
+
+
+target_link_libraries(utag tag)
+
+target_link_libraries(utag Qt5::Core)
+target_link_libraries(utag Qt5::Widgets)
+target_link_libraries(utag Qt5::Quick)
+
+
+add_subdirectory(src)
+
+
+#/////////////=====================
+
+
+#target_link_libraries(utag PRIVATE Qt${QT_VERSION_MAJOR}::Qt5Core Qt5Quick Widgets)
+
+#set(Qt5Core_DIR "~/Qt/5.15.1/clang_64/lib/cmake/Qt5Core/")
+
+#find_package(QT NAMES Qt6 Qt5 COMPONENTS Qt5Core REQUIRED)
+#find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Qt5Core REQUIRED)
+
+#find_package(Qt5 COMPONENTS Qt5Core REQUIRED)
+#find_package(Qt5 COMPONENTS Qt5Widgets REQUIRED)
+#find_package(Qt5 COMPONENTS Qt5Quick REQUIRED)
 
 #set(SOURCE_EXE main.cpp)
 
@@ -76,11 +85,8 @@ add_compile_options(
 #        $<INSTALL_INTERFACE:include>
 #        )
 
-target_link_libraries(utag tag)
+#set(Qt5Core_DIR "~/.brew/Cellar/qt/5.15.1/lib/cmake/Qt5Core")
+#set(Qt5_DIR "~/.brew/Cellar/qt/5.15.1/lib/cmake/Qt5")
 
-#target_link_libraries(utag PRIVATE Qt${QT_VERSION_MAJOR}::Qt5Core Qt5Quick Widgets)
-
-
-target_link_libraries(utag Qt5::Core)
-target_link_libraries(utag Qt5::Widgets)
-target_link_libraries(utag Qt5::Quick)
+#set(CMAKE_PREFIX_PATH "~/.brew/Cellar/qt/5.15.1/lib/cmake/Qt5Core")
+#target_include_directories(utag INTERFACE "../3dparty/taglib/taglib/")

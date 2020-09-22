@@ -6,11 +6,11 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Quick REQUIRED)
-
-find_library(TAGLIB taglib)
+#find_package(Qt5Core REQUIRED)
+#find_package(Qt5Widgets REQUIRED)
+#find_package(Qt5Quick REQUIRED)
+#
+#find_library(TAGLIB taglib)
 
 set (headers
         tag_functions.h
@@ -25,8 +25,8 @@ add_library(src
          STATIC ${headers} ${sources})
 
 
-target_link_libraries(src tag)
-target_link_libraries(src Qt5::Core Qt5::Widgets Qt5::Quick)
+#target_link_libraries(src tag)
+#target_link_libraries(src Qt5::Core Qt5::Widgets Qt5::Quick)
 
 #target_link_libraries(src PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 #target_link_libraries(src PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
