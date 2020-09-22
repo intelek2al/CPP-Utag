@@ -9,6 +9,8 @@
 #include <QTreeView>
 #include <QString>
 #include <QStringList>
+#include <iostream>
+#include "tag_functions.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -33,4 +35,7 @@ private:
     QFileSystemModel *dirmodel;
     QFileSystemModel *filemodel;
 };
+
+char *toChar(QString str);
+
 #endif // MAINWINDOW_H

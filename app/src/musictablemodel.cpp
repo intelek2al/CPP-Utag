@@ -87,3 +87,7 @@ void MusicTableModel::sort(int column, Qt::SortOrder order)
     // if (m_parent)
     //     m_parent->update();
 }
+
+void MusicTableModel::music_list_add(QVector<QString> params) {
+    music_list.push_back(std::move(params));
+}

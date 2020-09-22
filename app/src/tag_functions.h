@@ -7,6 +7,10 @@
 
 #include <iostream>
 #include <iomanip>
+#include <QDir>
+#include <QVector>
+#include <QString>
+#include <string>
 
 #include "../../3dparty/taglib/taglib/toolkit/tpropertymap.h"
 #include "../../3dparty/taglib/taglib/fileref.h"
@@ -20,7 +24,7 @@
 using std::cout;
 using std::endl;
 
-void read_tags(char *file_name);
+QVector<QString> read_tags(char *file_name, char *file_path);
 void load_lyrics(char *file_name);
 void load_cover(char *file_name);
 void modify_tag(char *file_name);

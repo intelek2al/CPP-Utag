@@ -16,9 +16,9 @@ class MusicTableModel : public QAbstractTableModel
 {
     Q_OBJECT
     QWidget *m_parent;
-    QVector<QString> listHeaders = {"Title", "Artist", "Gener", "Album", "Year", "Track"};
+    QVector<QString> listHeaders = {"Name", "Title", "Artist", "Genre", "Album", "Year", "Track"};
     QHash<int, QByteArray> m_roleNames;
-    QVector<QVector<QString>> music_list{{"bbb", "BBB", "R&B", "bbb", "BBB", "R&B"}, {"cccaasdasdasasdasdasdasdasddasd", "CCC", "Rock", "ccc", "CCC", "Rock"}, {"aaa", "AAA", "Rock", "aaa", "AAA", "Rock"}, {"Killer", "Queen", "Jass", "aaa", "AAA", "Rock"}};
+    QVector<QVector<QString>> music_list{/*{"bbb", "BBB", "R&B", "bbb", "BBB", "R&B"}, {"cccaasdasdasasdasdasdasdasddasd", "CCC", "Rock", "ccc", "CCC", "Rock"}, {"aaa", "AAA", "Rock", "aaa", "AAA", "Rock"}, {"Killer", "Queen", "Jass", "aaa", "AAA", "Rock"}*/};
 
 public:
     explicit MusicTableModel(QWidget *parent = nullptr);
@@ -30,6 +30,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    void music_list_add(QVector<QString> params);
 };
 
 #endif // MUSICTABLEMODEL_H

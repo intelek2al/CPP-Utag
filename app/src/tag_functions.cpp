@@ -122,16 +122,26 @@ void modify_tag(char *file_name)
     f.save();
 }
 
-void read_tags(char *file_name) {
+QVector<QString> read_tags(char *file_name, char *file_path) {
     cout << "============== \"" << file_name << "\" =======================" << endl;
-    TagLib::FileRef f(file_name);
+    TagLib::FileRef f((char *)file_path);
+    QVector<QString> data;
 
+//    {"Title", "Artist", "Gener", "Album", "Year", "Track"};
     if (!f.isNull() && f.tag()) {
 
         TagLib::Tag *tag = f.tag();
 
         cout << "-- TAG (basic) --" << endl;
         cout << "Artist  - \"" << tag->artist() << "\"" << endl;
+        data.push_back(file_name);
+        data.push_back(tag->title().toCString());
+        data.push_back(tag->artist().toCString());
+        data.push_back(tag->genre().toCString());
+        data.push_back(tag->album().toCString());
+        data.push_back("2020");
+        data.push_back("100");
+
         cout << "Title   - \"" << tag->title() << "\"" << endl;
         cout << "Album   - \"" << tag->album() << "\"" << endl;
         cout << "Genre   - \"" << tag->genre() << "\"" << endl;
@@ -169,4 +179,6 @@ void read_tags(char *file_name) {
         cout << "channels    - " << properties->channels() << endl;
         cout << "length      - " << minutes << ":" << std::setfill('0') << std::setw(2) << seconds << endl;
     }
+    std::cout << "{DDDDDREEEEEBBAAAUUG} " << file_name << std::endl;
+    return data;
 }
