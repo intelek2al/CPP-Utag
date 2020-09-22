@@ -19,7 +19,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
         ui->fileBrowser->hideColumn(i);
     }
 
-    MusicTableModel *tableModel = new MusicTableModel;
+    MusicTableModel *tableModel = new MusicTableModel(ui->mainMusicTable);
     filemodel = new QFileSystemModel(this);
     filemodel->setRootPath(sPath);
     filemodel->setFilter(QDir::NoDotAndDotDot | QDir::Files);

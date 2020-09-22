@@ -1,4 +1,6 @@
 #include "musictablemodel.h"
+#include "ui_mainwindow.h"
+#include "iostream"
 
 MusicTableModel::MusicTableModel(QWidget *parent) : m_parent(parent)
 {
@@ -29,16 +31,27 @@ int MusicTableModel::rowCount(const QModelIndex &parent) const
 
 int MusicTableModel::columnCount(const QModelIndex &parent) const
 {
-    return 3;
+    return listHeaders.size();
 }
 
 QVariant MusicTableModel::data(const QModelIndex &index, int role) const
 {
-
-    if (!music_list.empty())
-        return music_list[index.row()][index.column()];
-    else
-        return QString();
+    if (role == Qt::DisplayRole)
+    {
+        if (!music_list.empty())
+            return music_list[index.row()][index.column()];
+    }
+    else if (role == Qt::DecorationRole)
+    {
+        if (!music_list.empty())
+            return music_list[index.row()][index.column()];
+    }
+    else if (role == Qt::StatusTipRole)
+    {
+        if (!music_list.empty())
+            return music_list[index.row()][index.column()];
+    }
+    return QString();
 }
 
 QVariant MusicTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -49,14 +62,13 @@ QVariant MusicTableModel::headerData(int section, Qt::Orientation orientation, i
 
     if (orientation == Qt::Horizontal)
     {
-        switch (section)
+        try
         {
-        case 0:
-            return "Title";
-        case 1:
-            return "Artist";
-        case 2:
-            return "Gener";
+            listHeaders.at(section);
+            return listHeaders[section];
+        }
+        catch (std::out_of_range &)
+        {
         }
     }
     return QVariant();
@@ -64,11 +76,14 @@ QVariant MusicTableModel::headerData(int section, Qt::Orientation orientation, i
 
 void MusicTableModel::sort(int column, Qt::SortOrder order)
 {
+    beginResetModel();
     if (order == Qt::AscendingOrder)
     {
         std::sort(music_list.begin(), music_list.end(), [=](auto a, auto b) { return a[column] < b[column]; });
     }
     else
         std::sort(music_list.begin(), music_list.end(), [=](auto a, auto b) { return a[column] > b[column]; });
-    this->update();
+    endResetModel();
+    // if (m_parent)
+    //     m_parent->update();
 }
