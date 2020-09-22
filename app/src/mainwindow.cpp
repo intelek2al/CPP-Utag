@@ -30,7 +30,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
                                             << "*.aif");
     filemodel->setNameFilterDisables(false);
 
-    ui->mainMusicTable->setModel(/*filemodel*/ tableModel);
+    ui->mainMusicTable->setModel(/*filemodel */ tableModel);
     ui->fileBrowser->setRootIndex(dirmodel->index(sPath));
 }
 

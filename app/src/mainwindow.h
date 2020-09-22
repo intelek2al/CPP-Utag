@@ -22,21 +22,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT;
 
 public:
-    /*struct TEST : public QAbstractItemModel
-    {
-        QString Title;
-        QString Artist;
-        QString Gener;
-
-        virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()){
-            return createIndex(row, column, parent)} override;
-        virtual QModelIndex parent(const QModelIndex &child) override
-        {
-            return QModelIndex::parent;
-        }
-        
-    } test{"Killer", "Queen", "Rock"};*/
-
     explicit MainWindow(QString path = "~/", QWidget *parent = nullptr);
     ~MainWindow() override;
 

@@ -5,26 +5,30 @@
 #include <QAbstractItemModel>
 #include <QVector>
 
-struct MusicList
-{
-    QString title = "";
-    QString artist = "";
-    QString gener = "";
-};
+// struct MusicList
+// {
+//     QString title = "";
+//     QString artist = "";
+//     QString gener = "";
+// };
 
-class MusicTableModel : public QAbstractItemModel
+class MusicTableModel : public QAbstractTableModel
 {
     Q_OBJECT
     QWidget *m_parent;
     QHash<int, QByteArray> m_roleNames;
-    QVector<MusicList> music_list{{"aaa", "AAA", "Rock"}, {"bbb", "BBB", "R&B"}, {"ccc", "CCC", "Rock"}};
+    QVector<QVector<QString>> music_list{{"bbb", "BBB", "R&B"}, {"ccc", "CCC", "Rock"}, {"aaa", "AAA", "Rock"}};
 
 public:
     explicit MusicTableModel(QWidget *parent = nullptr);
-    QModelIndex parent(const QModelIndex &child);
-    int rowCount(const QModelIndex &parent = QModelIndex());
-    int columnCount(const QModelIndex &parent = QModelIndex());
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole);
+    // virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    // virtual QModelIndex parent(const QModelIndex &child) const override;
+    // QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 };
 
 #endif // MUSICTABLEMODEL_H
