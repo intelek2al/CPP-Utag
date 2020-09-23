@@ -170,31 +170,32 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
                 cout << std::left << std::setw(longest) << i->first << " - " << '"' << *j << '"' << endl;
             }
         }
+        if (!f.isNull() && f.audioProperties()) {
+
+            TagLib::AudioProperties *properties = f.audioProperties();
+
+            int seconds = properties->length() % 60;
+            int minutes = (properties->length() - seconds) / 60;
+
+            data[1] =(QString::fromStdString(std::to_string(minutes) +
+                                             ":" + std::to_string(seconds)));
+            cout << "-- AUDIO --" << endl;
+            cout << "bitrate     - " << properties->bitrate() << endl;
+            cout << "sample rate - " << properties->sampleRate() << endl;
+            cout << "channels    - " << properties->channels() << endl;
+            cout << "length      - " << minutes << ":" << std::setfill('0')
+                 << std::setw(2) << seconds << endl;
+        }
     }
 
-    if (!f.isNull() && f.audioProperties()) {
 
-        TagLib::AudioProperties *properties = f.audioProperties();
 
-        int seconds = properties->length() % 60;
-        int minutes = (properties->length() - seconds) / 60;
-
-        data[1] =(QString::fromStdString(std::to_string(minutes) +
-                                                      ":" + std::to_string(seconds)));
-        cout << "-- AUDIO --" << endl;
-        cout << "bitrate     - " << properties->bitrate() << endl;
-        cout << "sample rate - " << properties->sampleRate() << endl;
-        cout << "channels    - " << properties->channels() << endl;
-        cout << "length      - " << minutes << ":" << std::setfill('0')
-                                 << std::setw(2) << seconds << endl;
-    }
-
-    std::cout << " print vector\n {" << std::endl;
-    for (auto& item : data) {
-        std::cout << item.toStdString() << "\t";
-    }
-    std::cout << "}" << std::endl;
-    cout << "==============  end  =======================" << endl;
+//    std::cout << " print vector\n {" << std::endl;
+//    for (auto& item : data) {
+//        std::cout << item.toStdString() << "\t";
+//    }
+//    std::cout << "}" << std::endl;
+//    cout << "==============  end  =======================" << endl;
 
     return data;
 }
