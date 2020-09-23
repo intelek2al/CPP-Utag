@@ -108,6 +108,42 @@ void load_cover(char *file_name) {
 }
 
 
+QByteArray load_cover_array(char *file_name) {
+    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
+    TagLib::MPEG::File mpegFile(file_name);
+    TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
+    TagLib::ID3v2::FrameList Frame;
+    TagLib::ID3v2::AttachedPictureFrame *PicFrame;
+
+    void *SrcImage;
+    QByteArray *Image;
+    unsigned long Size;
+    if (id3v2tag) {
+        Frame = id3v2tag->frameListMap()[IdPicture];
+        if (!Frame.isEmpty()) {
+            for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
+                PicFrame = (TagLib::ID3v2::AttachedPictureFrame * )(*it); {
+                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
+                        // extract image (in it’s compressed form)
+                        Size = PicFrame->picture().size();
+                    SrcImage = malloc(Size);
+                    if (SrcImage) {
+//                        memcpy(SrcImage, PicFrame->picture().data(), Size);
+                        memcpy(Image, PicFrame->picture().data(), Size);
+                    }
+                }
+            }
+        }
+    }
+    else {
+        std::cout << "id3v2 not present";
+    }
+    return *Image;
+}
+
+
+
+
 unsigned int str_to_uint(const char* new_value) {
     unsigned int res = 0;
 
