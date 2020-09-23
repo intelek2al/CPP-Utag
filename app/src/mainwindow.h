@@ -14,6 +14,7 @@
 #include <iostream>
 #include "tag_functions.h"
 #include "tableviewer.h"
+#include "musictablemodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -42,6 +43,7 @@ private:
     QFileSystemModel *m_dirmodel;
     QVector<QVector<QString>> m_music_list;
     TableViewer *m_tableViewer;
+    MusicTableModel *m_tableModel;
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);
 };
 
