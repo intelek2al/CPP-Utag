@@ -21,8 +21,6 @@
 using std::cout;
 using std::endl;
 
-
-
 #include <QApplication>
 int main(int argc, char **argv)
 {
@@ -40,10 +38,7 @@ int main(int argc, char **argv)
     return app.exec();
 }
 
-
-
-
-
+t 
 //    if ((dp = opendir(argv[1])) == NULL) {
 //        std::cerr << "error open folder" << endl;
 //    }
