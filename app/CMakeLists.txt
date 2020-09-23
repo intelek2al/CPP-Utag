@@ -15,8 +15,8 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
 
-set(SOURCES main.cpp src/mainwindow.cpp src/musictablemodel.cpp src/tag_functions.cpp)
-set(HEADERS src/mainwindow.h src/tag_functions.h)
+set(SOURCES main.cpp src/mainwindow.cpp src/musictablemodel.cpp src/tag_functions.cpp src/tableviewer.cpp)
+set(HEADERS src/mainwindow.h src/tag_functions.h src/musictablemodel.h src/tableviewer.h)
 set(UI src/mainwindow.ui)
 
 add_executable(utag ${SOURCES} ${HEADERS} ${UI})

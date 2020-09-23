@@ -75,7 +75,7 @@ void load_cover(char *file_name) {
     TagLib::ID3v2::AttachedPictureFrame *PicFrame;
 
     void *SrcImage;
-    unsigned long Size;
+    unsigned long Size = 0;
 
     FILE *jpegFile;
     jpegFile = fopen("FromId3.jpg", "wb");
@@ -85,7 +85,7 @@ void load_cover(char *file_name) {
         Frame = id3v2tag->frameListMap()[IdPicture];
         if (!Frame.isEmpty()) {
             for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
-                PicFrame = (TagLib::ID3v2::AttachedPictureFrame * )(*it);
+                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
                 {
                     if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
 
@@ -116,13 +116,13 @@ QByteArray load_cover_array(char *file_name) {
     TagLib::ID3v2::AttachedPictureFrame *PicFrame;
 
     void *SrcImage;
-    QByteArray *Image;
-    unsigned long Size;
+    QByteArray *Image = nullptr;
+    unsigned long Size = 0;
     if (id3v2tag) {
         Frame = id3v2tag->frameListMap()[IdPicture];
         if (!Frame.isEmpty()) {
             for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
-                PicFrame = (TagLib::ID3v2::AttachedPictureFrame * )(*it); {
+                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it); {
                     if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
                         // extract image (in it’s compressed form)
                         Size = PicFrame->picture().size();
@@ -152,7 +152,7 @@ unsigned int str_to_uint(const char* new_value) {
     std::string line = new_value;
 
     if (std::regex_match(line.c_str(), result, regular)) {
-        res = std::stoi(result[0]);
+        res = std::stoul(result[0]);
 
     } else {
         throw std::invalid_argument("invalid argument\n");
@@ -179,6 +179,7 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
     TagLib::FileRef f(file_path);
 
     if (!f.isNull() && f.tag()) {
+        data.clear();
         data = QVector<QString>(10);
         TagLib::Tag *tag = f.tag();
         data[0] = QString(file_n.data());
@@ -332,8 +333,9 @@ void modify_tag_track(char *file_path, char *new_track) {
 
 void modify_tag(char *file_path, char field, char *new_value) {
     TagLib::FileRef f(file_path);
-
     if (!f.isNull() && f.tag()) {
+        unsigned int new_year = 0;
+        unsigned int new_track = 0;
         TagLib::Tag *tag = f.tag();
         switch (field) {
             case 't':
@@ -352,7 +354,6 @@ void modify_tag(char *file_path, char field, char *new_value) {
                 tag->setGenre(new_value);
                 break;
             case 'y':
-                unsigned int new_year;
                 try {
                     new_year = str_to_uint(new_value);
                 }
@@ -364,8 +365,14 @@ void modify_tag(char *file_path, char field, char *new_value) {
                 break;
 
             case 'T':
-                unsigned int new_track = str_to_uint(new_value);
-                tag->setYear(new_year);
+
+            try {
+                new_track = str_to_uint(new_value);
+            }
+            catch (std::exception& ex) {
+                std::cerr << ex.what();
+                break;
+            }
                 tag->setTrack(new_track);
         }
     }
