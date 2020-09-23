@@ -30,7 +30,7 @@ void load_lyrics(char *file_name) {
             // There could be multiple frames here; you may want to look at language
             // and/or description, instead of just picking the first.
             if (frame)
-                std::cout << frames.front()->toString() << std::endl;
+                std::cout << frames.front()->toString() << " here" << std::endl;
         }
     }
 }
@@ -104,7 +104,8 @@ void load_cover(char *file_name) {
                 }
             }
         }
-    } else {
+    }
+    else {
         std::cout << "id3v2 not present";
     }
 }
@@ -122,9 +123,14 @@ void modify_tag(char *file_name)
     f.save();
 }
 
+
+
+
 QVector<QString> read_tags(char *file_name, char *file_path) {
-    cout << "============== \"" << file_name << "\" =======================" << endl;
-    TagLib::FileRef f((char *)file_path);
+
+    std::string file_n= file_name;
+    cout << "============== \"" << file_n << "\" =======================" << endl;
+    TagLib::FileRef f(file_path);
     QVector<QString> data;
 
 //    {"Title", "Artist", "Gener", "Album", "Year", "Track"};
@@ -132,22 +138,27 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
 
         TagLib::Tag *tag = f.tag();
 
+
+        data.push_back(QString(file_n.data()));
+        data.push_back( tag->title() != TagLib::String::null ? tag->title().toCString(): "");
+        data.push_back(tag->artist() != TagLib::String::null ? tag->artist().toCString(): "");
+        data.push_back(tag->genre() != TagLib::String::null ? tag->genre().toCString(): "");
+        data.push_back(tag->album() != TagLib::String::null ? tag->album().toCString(): "");
+//        std::string year = std::to_string(tag->year());
+//        data.push_back(QString::fromStdString(std::to_string(tag->year())));
+//        data.push_back(QString::fromStdString(std::to_string(tag->track())));
+        data.push_back("");
+        data.push_back("");
+
         cout << "-- TAG (basic) --" << endl;
         cout << "Artist  - \"" << tag->artist() << "\"" << endl;
-        data.push_back(file_name);
-        data.push_back(tag->title().toCString());
-        data.push_back(tag->artist().toCString());
-        data.push_back(tag->genre().toCString());
-        data.push_back(tag->album().toCString());
-        data.push_back("2020");
-        data.push_back("100");
-
         cout << "Title   - \"" << tag->title() << "\"" << endl;
         cout << "Album   - \"" << tag->album() << "\"" << endl;
         cout << "Genre   - \"" << tag->genre() << "\"" << endl;
         cout << "year    - \"" << tag->year() << "\"" << endl;
         cout << "comment - \"" << tag->comment() << "\"" << endl;
         cout << "track   - \"" << tag->track() << "\"" << endl;
+
 
         TagLib::PropertyMap tags = f.file()->properties();
 
@@ -173,12 +184,24 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
         int seconds = properties->length() % 60;
         int minutes = (properties->length() - seconds) / 60;
 
+//        data.push_back(QString::fromStdString(std::to_string(minutes) +
+//                                                      ":" + std::to_string(seconds)));
+        data.push_back("");// time
         cout << "-- AUDIO --" << endl;
         cout << "bitrate     - " << properties->bitrate() << endl;
         cout << "sample rate - " << properties->sampleRate() << endl;
         cout << "channels    - " << properties->channels() << endl;
-        cout << "length      - " << minutes << ":" << std::setfill('0') << std::setw(2) << seconds << endl;
+        cout << "length      - " << minutes << ":" << std::setfill('0')
+                                 << std::setw(2) << seconds << endl;
     }
-    std::cout << "{DDDDDREEEEEBBAAAUUG} " << file_name << std::endl;
+
+    std::cout << " print vector\n {" << std::endl;
+    for (auto& item : data) {
+        std::cout << item.toStdString() << "\t";
+    }
+    std::cout << "}" << std::endl;
+    cout << "==============  end  =======================" << endl;
+//    data.pop_back();
+
     return data;
 }

@@ -36,7 +36,7 @@ int MusicTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant MusicTableModel::data(const QModelIndex &index, int role) const
 {
-    std::cout << music_list[index.row()][0].toStdString() << std::endl;
+//    std::cout << music_list[index.row()][0].toStdString() << std::endl;
     // for (int i = 0; i < music_list.size(); ++i)
     // {
     //     for (int j = 0; j < music_list[i].size(); ++j)
@@ -47,6 +47,7 @@ QVariant MusicTableModel::data(const QModelIndex &index, int role) const
     {
         if (!music_list.empty())
         {
+//            std::cerr << "---\nrow: " << index.row() << "\ncolumn: " << index.column() << "\nfile: " << music_list[index.row()][0].toStdString() << "\n---\n\n";
             if (!music_list[index.row()][index.column()].isEmpty())
                 return music_list[index.row()][index.column()];
         }
@@ -104,7 +105,7 @@ void MusicTableModel::sort(int column, Qt::SortOrder order)
     //     m_parent->update();
 }
 
-void MusicTableModel::music_list_add(QVector<QString> params)
+void MusicTableModel::music_list_add(QVector<QVector<QString>> params)
 {
-    music_list.push_back(std::move(params));
+    music_list = std::move(params);
 }
