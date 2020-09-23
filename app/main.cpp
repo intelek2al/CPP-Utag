@@ -24,6 +24,8 @@ using std::endl;
 
 
 #include <QApplication>
+
+
 int main(int argc, char **argv)
 {
 //        modify_tag(argv[1]);
@@ -33,9 +35,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     MainWindow window((QString(argv[1])));
     window.show();
-
-//    QCoreApplication app(argc, argv);
-
+system("leaks -q utag");
 
     return app.exec();
 }
