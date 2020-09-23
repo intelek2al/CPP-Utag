@@ -92,7 +92,6 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
     for (int i = 0; i < list.size(); ++i)
     {
         QFileInfo fileInfo = list.at(i);
-
         QVector<QString> tmp;
         try
         {
@@ -114,15 +113,72 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
 void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 {
     QVector<QString> current = m_music_list[index.row()];
-    QImage image("/Users/msavytskyi/Desktop/CPP-Utag/app/Filesaveas.png");
-    //    QByteArray ba = load_cover_array(m_music_list[index.row()][8].toStdString().data());
-    //    image.loadFromData(ba);
+//    QImage coverQImg;
+/*
+    ///===============
+    TagLib::MPEG::File mpegFile(m_music_list[index.row()][8].toStdString().data());
+    TagLib::ID3v2::Tag *m_tag = mpegFile.ID3v2Tag(true);
+    TagLib::ID3v2::FrameList frameList = m_tag->frameList("APIC");
+
+    if(frameList.isEmpty()) {
+        QImage coverQImg("../../app/logo1.png");
+//        return QImage();
+    } else {
+
+        TagLib::ID3v2::AttachedPictureFrame *coverImg = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
+
+
+        coverQImg.loadFromData((const uchar *) coverImg->picture().data(), coverImg->picture().size());
+    }
+    //=======
+    */
+///===================================== try load image =====================================
+/*
+    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
+
+    TagLib::MPEG::File mpegFile(m_music_list[index.row()][8].toStdString().data());
+    TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
+    TagLib::ID3v2::FrameList Frame;
+    TagLib::ID3v2::AttachedPictureFrame *PicFrame;
+
+    void *SrcImage;
+    unsigned long Size = 0;
+
+    if (id3v2tag) {
+        Frame = id3v2tag->frameListMap()[IdPicture];
+        if (!Frame.isEmpty()) {
+            for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
+                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
+                {
+                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
+                        // extract image (in it’s compressed form)
+                        Size = PicFrame->picture().size();
+                    SrcImage = malloc(Size);
+                    if (SrcImage) {
+                        memcpy(SrcImage, PicFrame->picture().data(), Size);
+                    }
+                }
+            }
+        coverQImg.loadFromData((const uchar *) PicFrame->picture().data(), PicFrame->picture().size());
+        free(SrcImage);
+        }
+    }
+    else {
+        QImage coverQImg("../../app/logo1.png");
+//        std::cout << "id3v2 not present";
+    }
+    ///==========================================================================
+*/
+    QImage coverQImg("../../app/logo1.png");  // default image
+
+
     QGraphicsScene *scene = new QGraphicsScene();
     ui->imageSong->setScene(scene);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
     scene->addItem(item);
+
+    std::cout << " element path =" << m_music_list[index.row()][8].toStdString().data() << std::endl;
     ui->imageSong->show();
-    //    buffer.open(QIODevice::ReadWrite);
     outputCurrentInfo(current, index);
 }
 

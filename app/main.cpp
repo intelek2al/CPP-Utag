@@ -25,10 +25,6 @@ using std::endl;
 
 int main(int argc, char **argv)
 {
-    //        modify_tag(argv[1]);
-    //        load_lyrics(argv[1]);
-    //        read_tags(argv[1]);
-
     QApplication app(argc, argv);
     MainWindow window((QString(argv[1])));
     window.show();
