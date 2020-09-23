@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <stdexcept>
 #include <QMainWindow>
 #include <QtCore>
 #include <QtGui>

@@ -17,7 +17,6 @@
     Lyrics/text         <full text string according to encoding>
 */
 
-
 void load_lyrics(char *file_name) {
     TagLib::MPEG::File f1(file_name);
 
@@ -34,7 +33,6 @@ void load_lyrics(char *file_name) {
         }
     }
 }
-
 
 /*
  *
@@ -123,10 +121,9 @@ void modify_tag(char *file_name)
     f.save();
 }
 
-
-
-
 QVector<QString> read_tags(char *file_name, char *file_path) {
+
+//    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track"};
 
     std::string file_n= file_name;
     cout << "============== \"" << file_n << "\" =======================" << endl;
@@ -135,20 +132,18 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
 
 //    {"Title", "Artist", "Gener", "Album", "Year", "Track"};
     if (!f.isNull() && f.tag()) {
-
+        data = QVector<QString>(10);
         TagLib::Tag *tag = f.tag();
 
 
-        data.push_back(QString(file_n.data()));
-        data.push_back( tag->title() != TagLib::String::null ? tag->title().toCString(): "");
-        data.push_back(tag->artist() != TagLib::String::null ? tag->artist().toCString(): "");
-        data.push_back(tag->genre() != TagLib::String::null ? tag->genre().toCString(): "");
-        data.push_back(tag->album() != TagLib::String::null ? tag->album().toCString(): "");
+        data[0] = (QString(file_n.data()));
+        data[2] = (tag->title().toCString());
+        data[3] =(tag->artist().toCString());
+        data[4] = (tag->genre().toCString());
+        data[5] =(tag->album().toCString());
 //        std::string year = std::to_string(tag->year());
-//        data.push_back(QString::fromStdString(std::to_string(tag->year())));
-//        data.push_back(QString::fromStdString(std::to_string(tag->track())));
-        data.push_back("");
-        data.push_back("");
+        data[6] = (tag->year() != 0 ? QString::fromStdString(std::to_string(tag->year())): "");
+        data[7] = (tag->track() != 0 ? QString::fromStdString(std::to_string(tag->track())): "");
 
         cout << "-- TAG (basic) --" << endl;
         cout << "Artist  - \"" << tag->artist() << "\"" << endl;
@@ -184,9 +179,8 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
         int seconds = properties->length() % 60;
         int minutes = (properties->length() - seconds) / 60;
 
-//        data.push_back(QString::fromStdString(std::to_string(minutes) +
-//                                                      ":" + std::to_string(seconds)));
-        data.push_back("");// time
+        data[1] =(QString::fromStdString(std::to_string(minutes) +
+                                                      ":" + std::to_string(seconds)));
         cout << "-- AUDIO --" << endl;
         cout << "bitrate     - " << properties->bitrate() << endl;
         cout << "sample rate - " << properties->sampleRate() << endl;
@@ -201,7 +195,6 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
     }
     std::cout << "}" << std::endl;
     cout << "==============  end  =======================" << endl;
-//    data.pop_back();
 
     return data;
 }
