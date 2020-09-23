@@ -21,8 +21,6 @@
 using std::cout;
 using std::endl;
 
-
-
 #include <QApplication>
 
 
@@ -40,10 +38,7 @@ system("leaks -q utag");
     return app.exec();
 }
 
-
-
-
-
+t 
 //    if ((dp = opendir(argv[1])) == NULL) {
 //        std::cerr << "error open folder" << endl;
 //    }
