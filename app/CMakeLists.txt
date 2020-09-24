@@ -44,7 +44,7 @@ add_compile_options(
          -Wall
          -Wextra
          -Wpedantic
-
+#        -g -fsanitize=address;
 #        -Wno-unused-parameter
 )
 

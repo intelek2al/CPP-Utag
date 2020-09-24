@@ -44,6 +44,7 @@ private:
     QVector<QVector<QString>> m_music_list;
     TableViewer *m_tableViewer;
     MusicTableModel *m_tableModel;
+    QString m_path;
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);
 };
 

@@ -25,8 +25,14 @@
 
 char *toChar(QString str)
 {
-    QByteArray ba = str.toUtf8();
-    return ba.data();
+    char *test = str.toUtf8().data();
+//    std::cout << "run function toChar " << str.toStdString().data() << "|" << test << std::endl;
+//    QByteArray ba = str.toUtf8();
+//    return ba.data();
+
+//    QByteArray array = str.toLocal8Bit();
+//    char* buffer = array.data();
+    return test;
 }
 
 void MainWindow::outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index)
@@ -34,25 +40,24 @@ void MainWindow::outputCurrentInfo(const QVector<QString> &current, const QModel
     m_tableViewer->setNewItems(current, index);
 }
 
-MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), m_path(sPath)
 {
-
     ui->setupUi(this);
 
     m_tableViewer = new TableViewer(ui->tableInfoSong);
     m_dirmodel = new QFileSystemModel(this);
     m_dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
-    m_dirmodel->setRootPath(sPath);
+    m_dirmodel->setRootPath(m_path);
 
     ui->fileBrowser->setModel(m_dirmodel);
-    ui->fileBrowser->setRootIndex(m_dirmodel->index(sPath));
+    ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
 
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {
         ui->fileBrowser->hideColumn(i);
     }
 
-    ui->fileBrowser->setRootIndex(m_dirmodel->index(sPath));
+    ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
 }
 
 MainWindow::~MainWindow()
@@ -65,6 +70,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
+
 {
     QString sPath = m_dirmodel->fileInfo(index).absoluteFilePath();
 
@@ -113,71 +119,13 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
 void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 {
     QVector<QString> current = m_music_list[index.row()];
-//    QImage coverQImg;
-/*
-    ///===============
-    TagLib::MPEG::File mpegFile(m_music_list[index.row()][8].toStdString().data());
-    TagLib::ID3v2::Tag *m_tag = mpegFile.ID3v2Tag(true);
-    TagLib::ID3v2::FrameList frameList = m_tag->frameList("APIC");
 
-    if(frameList.isEmpty()) {
-        QImage coverQImg("../../app/logo1.png");
-//        return QImage();
-    } else {
-
-        TagLib::ID3v2::AttachedPictureFrame *coverImg = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
-
-
-        coverQImg.loadFromData((const uchar *) coverImg->picture().data(), coverImg->picture().size());
-    }
-    //=======
-    */
-///===================================== try load image =====================================
-/*
-    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
-
-    TagLib::MPEG::File mpegFile(m_music_list[index.row()][8].toStdString().data());
-    TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
-    TagLib::ID3v2::FrameList Frame;
-    TagLib::ID3v2::AttachedPictureFrame *PicFrame;
-
-    void *SrcImage;
-    unsigned long Size = 0;
-
-    if (id3v2tag) {
-        Frame = id3v2tag->frameListMap()[IdPicture];
-        if (!Frame.isEmpty()) {
-            for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
-                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
-                {
-                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
-                        // extract image (in it’s compressed form)
-                        Size = PicFrame->picture().size();
-                    SrcImage = malloc(Size);
-                    if (SrcImage) {
-                        memcpy(SrcImage, PicFrame->picture().data(), Size);
-                    }
-                }
-            }
-        coverQImg.loadFromData((const uchar *) PicFrame->picture().data(), PicFrame->picture().size());
-        free(SrcImage);
-        }
-    }
-    else {
-        QImage coverQImg("../../app/logo1.png");
-//        std::cout << "id3v2 not present";
-    }
-    ///==========================================================================
-*/
-    QImage coverQImg("../../app/logo1.png");  // default image
-
-
+    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
+    ui->statusbar->showMessage(tr("image loaded"), 200);
     QGraphicsScene *scene = new QGraphicsScene();
     ui->imageSong->setScene(scene);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
     scene->addItem(item);
-
-    std::cout << " element path =" << m_music_list[index.row()][8].toStdString().data() << std::endl;
     ui->imageSong->show();
     outputCurrentInfo(current, index);
 }
@@ -190,3 +138,46 @@ void MainWindow::on_pushButton_clicked()
     m_tableModel->music_list_add(m_music_list);
     ui->mainMusicTable->setModel(m_tableModel);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    QImage coverQImg("app/logo1.png");
+/*
+    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
+    TagLib::MPEG::File mpegFile(m_music_list[index.row()][8].toStdString().data());
+    TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
+    TagLib::ID3v2::FrameList Frame;
+    TagLib::ID3v2::AttachedPictureFrame *PicFrame;
+
+    if (id3v2tag) {
+        Frame = id3v2tag->frameListMap()[IdPicture];
+        if (!Frame.isEmpty()) {
+            for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
+                std::cout << "for "<< *it << std::endl;
+                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
+                {
+//                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
+                    if (PicFrame) {
+//                        std::cout << "id3v2 presents!!!@@@@@@@@@@@@@@@@@@@@@@";
+                        coverQImg.loadFromData((const uchar *) PicFrame->picture().data(), PicFrame->picture().size());
+                        ui->statusbar->showMessage(tr("image loaded"), 200);
+                    }
+                }
+            }
+        }
+    }
+
+*/

@@ -25,7 +25,8 @@ using std::endl;
 QVector<QString> read_tags(char *file_name, char *file_path);
 void load_lyrics(char *file_name);
 void load_cover(char *file_name);
-QByteArray load_cover_array(char *file_name);
+
+QImage load_cover_image(char *file_path);
 
 void modify_tag_artist(char *file_path, char *new_artist);
 

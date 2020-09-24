@@ -1,4 +1,5 @@
 #include <regex>
+#include <QImage>
 #include "tag_functions.h"
 
 /* Unsychronised lyrics/text transcription
@@ -108,40 +109,35 @@ void load_cover(char *file_name) {
 }
 
 
-QByteArray load_cover_array(char *file_name) {
+QImage load_cover_image(char *file_path) {
+    QImage coverQImg("app/logo1.png");
+
     static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
-    TagLib::MPEG::File mpegFile(file_name);
+    TagLib::MPEG::File mpegFile(file_path);
     TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
     TagLib::ID3v2::FrameList Frame;
     TagLib::ID3v2::AttachedPictureFrame *PicFrame;
 
-    void *SrcImage;
-    QByteArray *Image = nullptr;
-    unsigned long Size = 0;
     if (id3v2tag) {
         Frame = id3v2tag->frameListMap()[IdPicture];
         if (!Frame.isEmpty()) {
             for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
-                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it); {
-                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
-                        // extract image (in it’s compressed form)
-                        Size = PicFrame->picture().size();
-                    SrcImage = malloc(Size);
-                    if (SrcImage) {
-//                        memcpy(SrcImage, PicFrame->picture().data(), Size);
-                        memcpy(Image, PicFrame->picture().data(), Size);
+//                std::cout << "for "<< *it << std::endl;
+                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
+                {
+//                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
+                    if (PicFrame)
+                    {
+//                        std::cout << "id3v2 presents!!!@@@@@@@@@@@@@@@@@@@@@@";
+                        coverQImg.loadFromData((const uchar *) PicFrame->picture().data(), PicFrame->picture().size());
+                        coverQImg = coverQImg.scaled(190, 190);
                     }
                 }
             }
         }
     }
-    else {
-        std::cout << "id3v2 not present";
-    }
-    return *Image;
+    return coverQImg;
 }
-
-
 
 
 unsigned int str_to_uint(const char* new_value) {
@@ -175,7 +171,7 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
 //    taglib_set_strings_unicode(FALSE);
 
     std::string file_n= file_name;
-//    cout << "============== \"" << file_n << "\" =======================" << endl;
+    std::string file_p= file_path;
     TagLib::FileRef f(file_path);
 
     if (!f.isNull() && f.tag()) {
@@ -189,7 +185,7 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
         data[5] =tag->album().toCString();
         data[6] = (tag->year() != 0 ? QString::fromStdString(std::to_string(tag->year())): "");
         data[7] = (tag->track() != 0 ? QString::fromStdString(std::to_string(tag->track())): "");
-        data[8] = QString(file_path);
+        data[8] = QString(file_p.data());
         data[9] =tag->comment().toCString();
 
         /*
