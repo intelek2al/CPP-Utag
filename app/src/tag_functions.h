@@ -35,8 +35,11 @@ void modify_tag_title(char *file_path, char *new_title);
 void modify_tag_genre(char *file_path, char *new_genre);
 void modify_tag_album(char *file_path, char *new_album);
 void modify_tag_comment(char *file_path, char *new_comment);
-void modify_tag_year(char *file_path, char *new_year);
-void modify_tag_track(char *file_path, char *new_track);
+
+void modify_tag_year(QVector<QString>& changes);
+void modify_tag_track(QVector<QString>& changes);
+
+void modify_tags(QVector<QString>& changes);
 
 
 #endif //UTAG_TAG_FUNCTIONS_H
