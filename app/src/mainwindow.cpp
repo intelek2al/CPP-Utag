@@ -90,6 +90,7 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
     //    current_directory.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     //    current_directory.setSorting(QDir::Size | QDir::Reversed);
 
+    delete m_tableModel;
     m_tableModel = new MusicTableModel(ui->mainMusicTable);
 
     QFileInfoList list = current_directory.entryInfoList();

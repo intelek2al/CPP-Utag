@@ -36,13 +36,6 @@ int MusicTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant MusicTableModel::data(const QModelIndex &index, int role) const
 {
-//    std::cout << music_list[index.row()][0].toStdString() << std::endl;
-    // for (int i = 0; i < music_list.size(); ++i)
-    // {
-    //     for (int j = 0; j < music_list[i].size(); ++j)
-    //         std::cout << music_list[i][j].toStdString() << "  ";
-    //     std::cout << std::endl;
-    // }
     if (role == Qt::DisplayRole)
     {
         if (!music_list.empty())
