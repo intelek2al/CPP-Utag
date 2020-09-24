@@ -128,7 +128,6 @@ QImage load_cover_image(char *file_path) {
 //                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
                     if (PicFrame)
                     {
-//                        std::cout << "id3v2 presents!!!@@@@@@@@@@@@@@@@@@@@@@";
                         coverQImg.loadFromData((const uchar *) PicFrame->picture().data(), PicFrame->picture().size());
                         coverQImg = coverQImg.scaled(190, 190);
                     }
@@ -143,7 +142,7 @@ QImage load_cover_image(char *file_path) {
 unsigned int str_to_uint(const char* new_value) {
     unsigned int res = 0;
 
-    std::regex regular(R"lit(\s*[0-8]\s*)lit");
+    std::regex regular(R"lit(\s*[0-9]\s*)lit");
     std::cmatch result;
     std::string line = new_value;
 
@@ -291,14 +290,15 @@ void modify_tag_comment(char *file_path, char *new_comment) {
     f.save();
 }
 
-void modify_tag_year(char *file_path, char *new_year) {
-    TagLib::FileRef f(file_path);
+void modify_tag_year(QVector<QString>& changes) {
+    TagLib::FileRef f(changes[8].toStdString().data());
     unsigned int n_year;
     try {
-        n_year = str_to_uint(new_year);
+        n_year = str_to_uint(changes[6].toStdString().data());
     }
     catch (std::exception& ex) {
         std::cerr << ex.what();
+        changes[6] = "";
         return;
     }
     if (!f.isNull() && f.tag())
@@ -309,14 +309,16 @@ void modify_tag_year(char *file_path, char *new_year) {
     f.save();
 }
 
-void modify_tag_track(char *file_path, char *new_track) {
-    TagLib::FileRef f(file_path);
+void modify_tag_track(QVector<QString>& changes) {
+    TagLib::FileRef f(changes[8].toStdString().data());
     unsigned int n_track;
+
     try {
-        n_track = str_to_uint(new_track);
+        n_track = str_to_uint(changes[7].toStdString().data());
     }
     catch (std::exception& ex) {
         std::cerr << ex.what();
+        changes[7] = "";
         return;
     }
     if (!f.isNull() && f.tag())
@@ -374,3 +376,24 @@ void modify_tag(char *file_path, char field, char *new_value) {
     }
 }
 
+//{"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
+
+void modify_tags(QVector<QString>& changes) {
+    TagLib::FileRef f(changes[8].toStdString().data());
+    std::cout << "line 382\n" << std::endl;
+
+    if (!f.isNull() && f.tag())
+    {
+        std::cout << "line 386\n" << std::endl;
+
+        TagLib::Tag *tag = f.tag();
+        tag->setArtist(changes[3].toStdString());
+        tag->setTitle(changes[2].toStdString());
+        tag->setGenre(changes[4].toStdString());
+        tag->setAlbum(changes[5].toStdString());
+//        tag->setComment(changes[9].toStdString());
+    }
+    f.save();
+    modify_tag_year(changes);
+    modify_tag_track(changes);
+}
