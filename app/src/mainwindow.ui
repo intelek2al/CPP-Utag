@@ -134,6 +134,11 @@
          </row>
          <row>
           <property name="text">
+           <string>Track</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
            <string>Path</string>
           </property>
          </row>
