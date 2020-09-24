@@ -14,9 +14,24 @@ find_library(TAGLIB taglib)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
+find_package(Qt5MultimediaWidgets REQUIRED )
 
-set(SOURCES main.cpp src/mainwindow.cpp src/musictablemodel.cpp src/tag_functions.cpp src/tableviewer.cpp)
-set(HEADERS src/mainwindow.h src/tag_functions.h src/musictablemodel.h src/tableviewer.h)
+SET(QT_USE_QTMULTIMEDIA TRUE)
+SET(QT_USE_QTMULTIMEDIAWIDGETS TRUE)
+
+set(SOURCES main.cpp src/mainwindow.cpp
+        src/musictablemodel.cpp
+        src/tag_functions.cpp
+        src/tableviewer.cpp
+        src/SoundPlayer.cpp)
+
+set(HEADERS src/mainwindow.h
+        src/tag_functions.h
+        src/musictablemodel.h
+        src/tableviewer.h
+        src/SoundPlayer.h)
+
 set(UI src/mainwindow.ui)
 
 add_executable(utag ${SOURCES} ${HEADERS} ${UI})
@@ -54,6 +69,9 @@ target_link_libraries(utag tag)
 target_link_libraries(utag Qt5::Core)
 target_link_libraries(utag Qt5::Widgets)
 target_link_libraries(utag Qt5::Quick)
+
+QT5_USE_MODULES (utag Multimedia MultimediaWidgets)
+#target_link_libraries(utag Qt5::Qmultimedia)
 
 add_subdirectory(src)
 
