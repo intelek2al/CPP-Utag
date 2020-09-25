@@ -11,10 +11,16 @@
 #include <QString>
 #include <QStringList>
 #include <QGraphicsPixmapItem>
+#include <QMediaPlayer>
+#include <QtMultimedia>
+#include <QMediaMetaData>
+#include <QMetaDataReaderControl>
+
 #include <iostream>
 #include "tag_functions.h"
 #include "tableviewer.h"
 #include "musictablemodel.h"
+#include "sound_tags.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui

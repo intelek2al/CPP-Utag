@@ -1,5 +1,9 @@
+
+
+#include <zconf.h>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 
 //    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
 
@@ -70,7 +74,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
-
 {
     QString sPath = m_dirmodel->fileInfo(index).absoluteFilePath();
     QDir current_directory(sPath);
@@ -99,34 +102,70 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
     {
         QFileInfo fileInfo = list.at(i);
         QVector<QString> tmp;
+        cout << "open file " << fileInfo.fileName().toStdString() << endl;
         try
         {
+            Sound_tags current_file;
+//            cout << "file name " << fileInfo.fileName().toStdString() <<
+//            "file path " << fileInfo.filePath().toStdString() << endl;
+
+            current_file.read_tags(fileInfo.fileName(), fileInfo.filePath());
+            current_file.print_tags();
+
+//            tmp = current_file->get_vector();
+            cout << "====================\n";
+            for (auto t : tmp) {
+                cout << t.toStdString() << endl;
+            }
+            cout << "====================\n";
+//            Siund_tags current_file(QString(fileInfo.fileName()), QString(fileInfo.filePath()));
             tmp = read_tags(toChar(QString(fileInfo.fileName())),
                             toChar(QString(fileInfo.filePath())));
+//            delete current_file;
         }
         catch (std::exception &e)
         {
             std::cerr << e.what() << std::endl;
         }
-        if (!tmp.empty())
+        if (!tmp.empty()) {
+            cout << "push back \n";
             m_music_list.push_back(tmp);
+        }
     }
-
     m_tableModel->music_list_add(m_music_list);
     ui->mainMusicTable->setModel(m_tableModel);
 }
 
-void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
-{
-    QVector<QString> current = m_music_list[index.row()];
+void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index) {
+    QMediaPlayer sound_item;
 
+    QVector<QString> current = m_music_list[index.row()];
+/*
+    sound_item.setMedia(QUrl::fromLocalFile(current[8]));
+    while(!sound_item.isMetaDataAvailable()){
+        QCoreApplication::processEvents();
+    }
+
+    if (sound_item.isMetaDataAvailable())
+    {
+        QString Artist = sound_item.metaData(QMediaMetaData::AlbumArtist).toString();
+        ui->statusbar->showMessage(sound_item.metaData(QStringLiteral("Title")).toString(), 1000);
+        sound_item.setVolume(10);
+        sound_item.play();
+    } else {
+        QString err = "error open file ";
+            err = err + current[8].toStdString().data();
+        ui->statusbar->showMessage((err), 1000);
+    }
+*/
     QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
-    ui->statusbar->showMessage(tr("image loaded"), 200);
+
     QGraphicsScene *scene = new QGraphicsScene();
     ui->imageSong->setScene(scene);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
     scene->addItem(item);
     ui->imageSong->show();
+
     outputCurrentInfo(current, index);
 }
 
