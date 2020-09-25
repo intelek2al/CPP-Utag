@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-//#include "SoundPlayer.h"
 #include "ui_mainwindow.h"
 
 //    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
@@ -122,13 +121,13 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 {
     QVector<QString> current = m_music_list[index.row()];
 
-    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
-    ui->statusbar->showMessage(tr("image loaded"), 200);
-    QGraphicsScene *scene = new QGraphicsScene();
-    ui->imageSong->setScene(scene);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
-    scene->addItem(item);
-    ui->imageSong->show();
+//    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
+//    ui->statusbar->showMessage(tr("image loaded"), 200);
+//    QGraphicsScene *scene = new QGraphicsScene();
+//    ui->imageSong->setScene(scene);
+//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+//    scene->addItem(item);
+//    ui->imageSong->show();
     outputCurrentInfo(current, index);
 }
 
@@ -205,5 +204,5 @@ void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
 
 void MainWindow::setMusicPlay(QString soundPath)
 {
-
+    m_player->setSound(soundPath);
 }

@@ -2,7 +2,12 @@
 #define UTAG_SOUNDPLAYER_H
 #include <QWidget>
 #include <QMediaPlayer>
-#include "ui_mainwindow.h"
+#include <QTime>
+//#include "ui_mainwindow.h"
+
+namespace Ui {
+    class MainWindow;
+}
 
 class SoundPlayer {
 public:
@@ -15,12 +20,13 @@ public slots:
     void setPlay();
     void setPause();
     void setStop();
-    void setVolume();
-    void setPosition();
+    void setVolume(int position);
+    void setPosition(int position);
+    void setMovedPosition(int position);
 
 private:
     QMediaPlayer *m_player;
-    Ui::MainWindow *m_child;
+    Ui::MainWindow *ui;
 };
 
 
