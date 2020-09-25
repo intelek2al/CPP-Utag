@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+//#include "SoundPlayer.h"
 #include "ui_mainwindow.h"
 
 //    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
@@ -47,6 +48,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
 {
     ui->setupUi(this);
 
+    m_player = new SoundPlayer(ui);
     m_tableViewer = new TableViewer(ui->tableInfoSong);
     m_dirmodel = new QFileSystemModel(this);
     m_dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
@@ -185,3 +187,23 @@ void MainWindow::on_pushButton_clicked()
     }
 
 */
+
+void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
+{
+    QVector<QString> current = m_music_list[index.row()];
+
+//    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
+//    ui->statusbar->showMessage(tr("image loaded"), 200);
+//    QGraphicsScene *scene = new QGraphicsScene();
+//    ui->imageSong->setScene(scene);
+//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+//    scene->addItem(item);
+//    ui->imageSong->show();
+    outputCurrentInfo(current, index);
+    setMusicPlay(current[8]);
+}
+
+void MainWindow::setMusicPlay(QString soundPath)
+{
+
+}

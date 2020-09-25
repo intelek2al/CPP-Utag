@@ -13,7 +13,6 @@ class TableViewer
 public:
     TableViewer(QTableWidget *parent);
     ~TableViewer();
-public:
     void setNewItems(const QVector<QString> &current);
     void setNewItems(const QVector<QString> &current, const QModelIndex &index);
     QVector<QString> getResult();
