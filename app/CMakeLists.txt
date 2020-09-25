@@ -14,7 +14,9 @@ find_library(TAGLIB taglib)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
+
 find_package(Qt5Multimedia REQUIRED)
+
 find_package(Qt5MultimediaWidgets REQUIRED )
 
 SET(QT_USE_QTMULTIMEDIA TRUE)
@@ -50,6 +52,8 @@ include_directories(../cmake-build-debug/3dparty/taglib/)
 
 include_directories(${Qt5_DIR})
 
+include_directories(${Qt5Multimedia_INCLUDES})
+
 include_directories(src)
 
 add_compile_options(
@@ -70,8 +74,9 @@ target_link_libraries(utag Qt5::Core)
 target_link_libraries(utag Qt5::Widgets)
 target_link_libraries(utag Qt5::Quick)
 
-QT5_USE_MODULES (utag Multimedia MultimediaWidgets)
-#target_link_libraries(utag Qt5::Qmultimedia)
+#QT5_USE_MODULES (utag Multimedia MultimediaWidgets)
+target_link_libraries(utag ${Qt5Multimedia_LIBRARIES})
+#target_link_libraries(utag Qt5MultimediaWidgets)
 
 add_subdirectory(src)
 
