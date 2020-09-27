@@ -86,6 +86,7 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
                                                    << "*.flac"
                                                    << "*.wav"
                                                    << "*.ogg"
+                                                   << "*.m4a"
                                                    << "*.aif");
     //    current_directory.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     //    current_directory.setSorting(QDir::Size | QDir::Reversed);
@@ -128,7 +129,7 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
     QImage coverQImg;
 
     if (fileType == "mp3") {
-        coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
+        coverQImg = load_cover_image_mpeg(m_music_list[index.row()][8].toStdString().data());
         ui->statusbar->showMessage(tr( " loaded"), 200);
     }
     else {
@@ -154,6 +155,8 @@ void MainWindow::on_pushButton_clicked()
 //    QString save_to_file = m_music_list[m_tableViewer->getIndex().row()][8];
 
     modify_tags(newSongTag);
+
+    set_image_mpeg( newSongTag[8].toStdString().data(), "../../app/Moby_cover.jpg");
     m_music_list[m_tableViewer->getIndex().row()] = std::move(newSongTag);
     m_tableModel->music_list_add(m_music_list);
     ui->mainMusicTable->setModel(m_tableModel);

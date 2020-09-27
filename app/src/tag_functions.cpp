@@ -1,6 +1,9 @@
 #include <regex>
 #include <QImage>
+#include <mp4/mp4file.h>
 #include "tag_functions.h"
+
+class ImageFile;
 
 /* Unsychronised lyrics/text transcription
  * This frame contains the lyrics of the song or a text transcription of other vocal activities.
@@ -140,24 +143,6 @@ QImage load_cover_image(char *file_path) {
 }
 
 
-static QImage load_cover_image_mpeg(char *file_path)
-{
-    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
-    TagLib::MPEG::File mpegFile(file_path);
-    TagLib::ID3v2::Tag *tag = mpegFile.ID3v2Tag();
-    TagLib::ID3v2::FrameList l = tag->frameList("APIC");
-
-    QImage image;
-
-    if(l.isEmpty())
-        return QImage("../../app/logo1.png");
-
-    TagLib::ID3v2::AttachedPictureFrame *f =
-            static_cast<TagLib::ID3v2::AttachedPictureFrame *>(l.front());
-
-    image.loadFromData((const uchar *) f->picture().data(), f->picture().size());
-    return image;
-}
 
 
 unsigned int str_to_uint(const char* new_value) {
@@ -417,4 +402,81 @@ void modify_tags(QVector<QString>& changes) {
     f.save();
     modify_tag_year(changes);
     modify_tag_track(changes);
+}
+
+QImage load_cover_image_mpeg(char *file_path)
+{
+    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
+    TagLib::MPEG::File mpegFile(file_path);
+    TagLib::ID3v2::Tag *tag = mpegFile.ID3v2Tag();
+    TagLib::ID3v2::FrameList l = tag->frameList("APIC");
+
+    QImage image;
+
+    if (l.isEmpty()) {
+        return QImage("../../app/logo1.png");
+    }
+
+    TagLib::ID3v2::AttachedPictureFrame *f =
+            static_cast<TagLib::ID3v2::AttachedPictureFrame *>(l.front());
+
+    image.loadFromData((const uchar *) f->picture().data(), f->picture().size());
+    return image;
+}
+
+
+QImage load_cover_image_m4a(char *file_path)
+{
+    QImage image;
+
+    TagLib::MP4::File file(file_path);
+    TagLib::MP4::Tag* tag = file.tag();
+    TagLib::MP4::ItemListMap itemsListMap = tag->itemListMap();
+    TagLib::MP4::Item coverItem = itemsListMap["covr"];
+    TagLib::MP4::CoverArtList coverArtList = coverItem.toCoverArtList();
+
+    if (coverArtList.isEmpty()) {
+        return QImage("../../app/logo1.png");
+    }
+    else
+    {
+        TagLib::MP4::CoverArt coverArt = coverArtList.front();
+        image.loadFromData((const uchar *)
+                                   coverArt.data().data(), coverArt.data().size());
+        return QImage();
+    }
+}
+
+QImage load_cover_image_ogg(char *file_path) {
+    return QImage();
+}
+
+void set_image_mpeg(char *file_path, char *image_path)
+{
+    TagLib::MPEG::File mpegFile(file_path);
+    TagLib::ID3v2::Tag *tag = mpegFile.ID3v2Tag();
+
+    TagLib::ID3v2::FrameList frames = tag->frameList("APIC");
+
+    TagLib::ID3v2::AttachedPictureFrame *frame = 0;
+
+    if(frames.isEmpty())
+    {
+        frame = new TagLib::ID3v2::AttachedPictureFrame;
+        tag->addFrame(frame);
+    }
+    else
+    {
+        frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+    }
+
+    ImageFile imageFile(image_path);
+    TagLib::ByteVector imageData = imageFile.data();
+    frame->setMimeType("image/jpeg");
+    frame->setPicture(imageData);
+    mpegFile.save();
+//    TagLib::ID3v2::AttachedPictureFrame *frame = new TagLib::ID3v2::AttachedPictureFrame;
+//    tag->addFrame(frame);
+//    audioFile.save();
+
 }

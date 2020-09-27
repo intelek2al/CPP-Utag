@@ -19,6 +19,27 @@
 
 #include "../../3dparty/taglib/bindings/c/tag_c.h"
 
+class ImageFile : public TagLib::File
+{
+public:
+    ImageFile(const char *file) : TagLib::File(file)
+    {
+
+    }
+
+    TagLib::ByteVector data()
+    {
+        return readBlock(length());
+    }
+
+
+private:
+    virtual TagLib::Tag *tag() const { return 0; }
+    virtual TagLib::AudioProperties *audioProperties() const { return 0; }
+    virtual bool save() { return false; }
+};
+
+
 using std::cout;
 using std::endl;
 
@@ -27,6 +48,11 @@ void load_lyrics(char *file_name);
 void load_cover(char *file_name);
 
 QImage load_cover_image(char *file_path);
+QImage load_cover_image_mpeg(char *file_path);
+QImage load_cover_image_m4a(char *file_path);
+QImage load_cover_image_ogg(char *file_path);
+
+void set_image_mpeg(char *file_path, char *image_path);
 
 void modify_tag_artist(char *file_path, char *new_artist);
 
@@ -40,6 +66,7 @@ void modify_tag_year(QVector<QString>& changes);
 void modify_tag_track(QVector<QString>& changes);
 
 void modify_tags(QVector<QString>& changes);
+
 
 
 #endif //UTAG_TAG_FUNCTIONS_H
