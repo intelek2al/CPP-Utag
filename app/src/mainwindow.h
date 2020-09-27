@@ -18,8 +18,7 @@
 #include "SoundPlayer.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui
-{
+namespace Ui {
     class MainWindow;
 }
 QT_END_NAMESPACE
@@ -42,6 +41,16 @@ private slots:
     void on_pushButton_clicked();
 
     void on_mainMusicTable_doubleClicked(const QModelIndex &index);
+
+    void on_playButton_clicked();
+
+    void on_pauseButton_clicked();
+
+    void on_stopButton_clicked();
+
+    void on_statusPlay_valueChanged(int value);
+
+    void on_statusVolume_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;

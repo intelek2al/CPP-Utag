@@ -26,13 +26,17 @@ set(SOURCES main.cpp src/mainwindow.cpp
         src/musictablemodel.cpp
         src/tag_functions.cpp
         src/tableviewer.cpp
-        src/SoundPlayer.cpp)
+        src/SoundPlayer.cpp
+        src/sound_tags.cpp
+        )
 
 set(HEADERS src/mainwindow.h
         src/tag_functions.h
         src/musictablemodel.h
         src/tableviewer.h
-        src/SoundPlayer.h)
+        src/SoundPlayer.h
+        src/sound_tags.h
+        )
 
 set(UI src/mainwindow.ui)
 

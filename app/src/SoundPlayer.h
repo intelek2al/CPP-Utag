@@ -3,13 +3,12 @@
 #include <QWidget>
 #include <QMediaPlayer>
 #include <QTime>
-//#include "ui_mainwindow.h"
 
 namespace Ui {
     class MainWindow;
 }
 
-class SoundPlayer {
+class SoundPlayer : public QObject {
 public:
     SoundPlayer(Ui::MainWindow *child);
     ~SoundPlayer();
@@ -23,6 +22,10 @@ public slots:
     void setVolume(int position);
     void setPosition(int position);
     void setMovedPosition(int position);
+    void stateCheck(QMediaPlayer::State state);
+
+private slots:
+    void on_statusPlay_valueChanged(int value);
 
 private:
     QMediaPlayer *m_player;
