@@ -21,6 +21,7 @@
 #include "tableviewer.h"
 #include "musictablemodel.h"
 #include "sound_tags.h"
+#include "SoundPlayer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -28,6 +29,8 @@ namespace Ui
     class MainWindow;
 }
 QT_END_NAMESPACE
+
+class SoundPlayer;
 
 class MainWindow : public QMainWindow
 {
@@ -44,13 +47,18 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_mainMusicTable_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *m_dirmodel;
     QVector<QVector<QString>> m_music_list;
     TableViewer *m_tableViewer;
     MusicTableModel *m_tableModel;
+    SoundPlayer *m_player;
     QString m_path;
+
+    void setMusicPlay(QString soundPath);
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);
 };
 

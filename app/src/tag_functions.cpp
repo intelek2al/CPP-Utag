@@ -110,7 +110,8 @@ void load_cover(char *file_name) {
 
 
 QImage load_cover_image(char *file_path) {
-    QImage coverQImg("app/logo1.png");
+//    QImage coverQImg("app/logo1.png");
+    QImage coverQImg("../../app/logo1.png");
 
     static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
     TagLib::MPEG::File mpegFile(file_path);
@@ -136,6 +137,26 @@ QImage load_cover_image(char *file_path) {
         }
     }
     return coverQImg;
+}
+
+
+static QImage load_cover_image_mpeg(char *file_path)
+{
+    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
+    TagLib::MPEG::File mpegFile(file_path);
+    TagLib::ID3v2::Tag *tag = mpegFile.ID3v2Tag();
+    TagLib::ID3v2::FrameList l = tag->frameList("APIC");
+
+    QImage image;
+
+    if(l.isEmpty())
+        return QImage("../../app/logo1.png");
+
+    TagLib::ID3v2::AttachedPictureFrame *f =
+            static_cast<TagLib::ID3v2::AttachedPictureFrame *>(l.front());
+
+    image.loadFromData((const uchar *) f->picture().data(), f->picture().size());
+    return image;
 }
 
 
