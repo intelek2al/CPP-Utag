@@ -1,7 +1,3 @@
-//
-// Created by Serhiy Nikolayenko on 9/25/20.
-//
-
 //    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
 
 #include "sound_tags.h"
@@ -68,26 +64,4 @@ Sound_tags::~Sound_tags() {
 QVector<QString> Sound_tags::get_vector() const {
     return tags;
 }
-
-void Sound_tags::print_tags() const {
-    std::cout << "\n vector tags\n";
-    std::cout << "file name \t"   << tags[0].toStdString() << std::endl <<
-     "Time \t\t =" << tags[1].toStdString() << std::endl <<
-     "Title \t\t ="   << tags[2].toStdString() << std::endl <<
-    "AlbumArtist \t ="   << tags[3].toStdString() << std::endl <<
-     "Genre \t ="   << tags[4].toStdString() << std::endl <<
-     "AlbumTitle \t ="   << tags[5].toStdString() << std::endl <<
-     "Year \t\t ="   << tags[6].toStdString() << std::endl <<
-     "TrackNumber \t ="   << tags[7].toStdString() << std::endl <<
-     "file path \t ="   << tags[8].toStdString() << std::endl <<
-    "Comment  \t ="   << tags[9].toStdString() << std::endl;
-
-
-    for (auto& elem  : tags) {
-        std::cout << elem.toStdString() << std::endl;
-    }
-
-}
-
-
 

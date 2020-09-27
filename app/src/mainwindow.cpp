@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "sound_tags.h"
 #include "ui_mainwindow.h"
 
 //    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
@@ -29,12 +30,12 @@ using std::endl;
 char *toChar(QString str)
 {
     char *test = str.toUtf8().data();
-//    std::cout << "run function toChar " << str.toStdString().data() << "|" << test << std::endl;
-//    QByteArray ba = str.toUtf8();
-//    return ba.data();
+    //    std::cout << "run function toChar " << str.toStdString().data() << "|" << test << std::endl;
+    //    QByteArray ba = str.toUtf8();
+    //    return ba.data();
 
-//    QByteArray array = str.toLocal8Bit();
-//    char* buffer = array.data();
+    //    QByteArray array = str.toLocal8Bit();
+    //    char* buffer = array.data();
     return test;
 }
 
@@ -71,7 +72,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
-
 {
     QString sPath = m_dirmodel->fileInfo(index).absoluteFilePath();
     QDir current_directory(sPath);
@@ -103,6 +103,9 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
         QVector<QString> tmp;
         try
         {
+            Sound_tags current;
+            //            current.read_tags(fileInfo.fileName(), fileInfo.filePath());
+            //            tmp = current.get_vector();
             tmp = read_tags(toChar(QString(fileInfo.fileName())),
                             toChar(QString(fileInfo.filePath())));
         }
@@ -123,8 +126,7 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
     QVector<QString> current = m_music_list[index.row()];
 
     std::string fileName = m_music_list[index.row()][0].toStdString().data();
-    std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
-
+//    std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
     std::string fileType = fileName.substr(fileName.size() - 3);
     QImage coverQImg;
 
@@ -144,15 +146,23 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
     scene->addItem(item);
     ui->imageSong->show();
+
+    //    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
+    //    ui->statusbar->showMessage(tr("image loaded"), 200);
+    //    QGraphicsScene *scene = new QGraphicsScene();
+    //    ui->imageSong->setScene(scene);
+    //    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+    //    scene->addItem(item);
+    //    ui->imageSong->show();
     outputCurrentInfo(current, index);
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     auto newSongTag = m_tableViewer->getResult();
-    cout << "n size =" <<  newSongTag.size() << endl;
+    cout << "n size =" << newSongTag.size() << endl;
 
-//    QString save_to_file = m_music_list[m_tableViewer->getIndex().row()][8];
+    //    QString save_to_file = m_music_list[m_tableViewer->getIndex().row()][8];
 
     modify_tags(newSongTag);
 
@@ -164,15 +174,50 @@ void MainWindow::on_pushButton_clicked()
 
 
 
+void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
+{
+    QVector<QString> current = m_music_list[index.row()];
 
+    //    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
+    //    ui->statusbar->showMessage(tr("image loaded"), 200);
+    //    QGraphicsScene *scene = new QGraphicsScene();
+    //    ui->imageSong->setScene(scene);
+    //    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+    //    scene->addItem(item);
+    //    ui->imageSong->show();
+    outputCurrentInfo(current, index);
+    setMusicPlay(current[8]);
+}
 
+void MainWindow::setMusicPlay(QString soundPath)
+{
+    m_player->setSound(soundPath);
+}
 
+void MainWindow::on_playButton_clicked()
+{
+    m_player->setPlay();
+}
 
+void MainWindow::on_pauseButton_clicked()
+{
+    m_player->setPause();
+}
 
+void MainWindow::on_stopButton_clicked()
+{
+    m_player->setStop();
+}
 
+void MainWindow::on_statusPlay_valueChanged(int value)
+{
+    m_player->setMovedPosition(value);
+}
 
-
-
+void MainWindow::on_statusVolume_valueChanged(int value)
+{
+    m_player->setVolume(value);
+}
 
 
 
@@ -202,23 +247,3 @@ void MainWindow::on_pushButton_clicked()
         }
     }
 */
-
-void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
-{
-    QVector<QString> current = m_music_list[index.row()];
-
-//    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
-//    ui->statusbar->showMessage(tr("image loaded"), 200);
-//    QGraphicsScene *scene = new QGraphicsScene();
-//    ui->imageSong->setScene(scene);
-//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
-//    scene->addItem(item);
-//    ui->imageSong->show();
-    outputCurrentInfo(current, index);
-    setMusicPlay(current[8]);
-}
-
-void MainWindow::setMusicPlay(QString soundPath)
-{
-    m_player->setSound(soundPath);
-}

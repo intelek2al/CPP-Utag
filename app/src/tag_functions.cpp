@@ -148,11 +148,12 @@ QImage load_cover_image(char *file_path) {
 unsigned int str_to_uint(const char* new_value) {
     unsigned int res = 0;
 
-    std::regex regular(R"lit(\s*[0-9]\s*)lit");
+    std::regex regular(R"lit(\s*[0-9]+\s*)lit");
     std::cmatch result;
     std::string line = new_value;
 
     if (std::regex_match(line.c_str(), result, regular)) {
+//        std::cout << "result[0]" << result[0] << std::endl;
         res = std::stoul(result[0]);
 
     } else {
@@ -185,9 +186,9 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
         TagLib::Tag *tag = f.tag();
         data[0] = QString(file_n.data());
         data[2] = tag->title().toCString();
-        data[3] =tag->artist().toCString();
+        data[3] = tag->artist().toCString();
         data[4] = tag->genre().toCString();
-        data[5] =tag->album().toCString();
+        data[5] = tag->album().toCString();
         data[6] = (tag->year() != 0 ? QString::fromStdString(std::to_string(tag->year())): "");
         data[7] = (tag->track() != 0 ? QString::fromStdString(std::to_string(tag->track())): "");
         data[8] = QString(file_p.data());
@@ -390,8 +391,6 @@ void modify_tags(QVector<QString>& changes) {
 
     if (!f.isNull() && f.tag())
     {
-        std::cout << "line 386\n" << std::endl;
-
         TagLib::Tag *tag = f.tag();
         tag->setArtist(changes[3].toStdString());
         tag->setTitle(changes[2].toStdString());
@@ -455,9 +454,7 @@ void set_image_mpeg(char *file_path, char *image_path)
 {
     TagLib::MPEG::File mpegFile(file_path);
     TagLib::ID3v2::Tag *tag = mpegFile.ID3v2Tag();
-
     TagLib::ID3v2::FrameList frames = tag->frameList("APIC");
-
     TagLib::ID3v2::AttachedPictureFrame *frame = 0;
 
     if(frames.isEmpty())
@@ -478,5 +475,4 @@ void set_image_mpeg(char *file_path, char *image_path)
 //    TagLib::ID3v2::AttachedPictureFrame *frame = new TagLib::ID3v2::AttachedPictureFrame;
 //    tag->addFrame(frame);
 //    audioFile.save();
-
 }

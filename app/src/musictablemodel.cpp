@@ -1,5 +1,5 @@
 #include "musictablemodel.h"
-#include "ui_mainwindow.h"
+#include "mainwindow.h"
 #include "iostream"
 
 MusicTableModel::MusicTableModel(QWidget *parent) : m_parent(parent)
@@ -24,12 +24,12 @@ MusicTableModel::MusicTableModel(QWidget *parent) : m_parent(parent)
 //     return m_roleNames;
 // }
 
-int MusicTableModel::rowCount(const QModelIndex &parent) const
+int MusicTableModel::rowCount(const QModelIndex &) const
 {
     return music_list.size();
 }
 
-int MusicTableModel::columnCount(const QModelIndex &parent) const
+int MusicTableModel::columnCount(const QModelIndex &) const
 {
     return listHeaders.size();
 }
@@ -68,7 +68,7 @@ QVariant MusicTableModel::headerData(int section, Qt::Orientation orientation, i
 {
     if (role != Qt::DisplayRole)
         return QVariant();
-    static int row = 0;
+//    static int row = 0;
 
     if (orientation == Qt::Horizontal)
     {
