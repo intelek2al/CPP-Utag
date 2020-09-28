@@ -58,6 +58,12 @@ private slots:
 
     void on_statusVolume_valueChanged(int value);
 
+    void on_serarch_line_returnPressed();
+
+    void on_change_cover_button_clicked();
+
+//    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *m_dirmodel;

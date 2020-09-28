@@ -57,12 +57,12 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>50</y>
+      <y>70</y>
       <width>1301</width>
-      <height>581</height>
+      <height>561</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="3,8,4">
+    <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="2,6,2">
      <property name="sizeConstraint">
       <enum>QLayout::SetNoConstraint</enum>
      </property>
@@ -70,9 +70,16 @@
       <number>0</number>
      </property>
      <item row="0" column="2">
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="4,3,0">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,0,4,0">
        <item>
         <widget class="QGraphicsView" name="imageSong"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="change_cover_button">
+         <property name="text">
+          <string>change cover image</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QTableWidget" name="tableInfoSong">
@@ -166,19 +173,6 @@
        </item>
       </layout>
      </item>
-     <item row="0" column="0">
-      <widget class="QTreeView" name="fileBrowser">
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="sortingEnabled">
-        <bool>false</bool>
-       </property>
-       <attribute name="headerVisible">
-        <bool>false</bool>
-       </attribute>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QTableView" name="mainMusicTable">
        <property name="styleSheet">
@@ -219,6 +213,19 @@
        </attribute>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QTreeView" name="fileBrowser">
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="sortingEnabled">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_2">
@@ -227,18 +234,21 @@
       <x>-10</x>
       <y>0</y>
       <width>1321</width>
-      <height>51</height>
+      <height>67</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="playerLayout" stretch="2,2,2,1,0,5,0,1">
+    <layout class="QHBoxLayout" name="playerLayout" stretch="0,2,2,0,0,5,0,0,0">
      <property name="spacing">
       <number>20</number>
      </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <property name="leftMargin">
-      <number>40</number>
+      <number>20</number>
      </property>
      <property name="rightMargin">
-      <number>40</number>
+      <number>20</number>
      </property>
      <item>
       <widget class="QPushButton" name="playButton">
@@ -261,7 +271,11 @@
         </size>
        </property>
        <property name="text">
-        <string>Pl</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../resources/play.png</normaloff>../resources/play.png</iconset>
        </property>
       </widget>
      </item>
@@ -339,6 +353,9 @@
      </item>
      <item>
       <widget class="Line" name="line">
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -347,7 +364,10 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,8,2">
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,8,1">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
+         </property>
          <item>
           <widget class="QGraphicsView" name="graphicsView">
            <property name="sizePolicy">
@@ -442,7 +462,60 @@ color: rgb(132, 130, 133);</string>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QComboBox" name="comboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>25</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>All</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Title</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Artist</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="serarch_line">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>143</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QLineEdit {
+     border: 2px solid rgb(100, 149, 237) ;
+     border-radius: 7px;
+     padding: 0 8px;
+     background: rgb(169, 169, 169);
+     selection-background-color: blue;
+ }</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

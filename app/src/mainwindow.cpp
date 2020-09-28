@@ -1,3 +1,4 @@
+#include <QFileDialog>
 #include "mainwindow.h"
 #include "sound_tags.h"
 #include "ui_mainwindow.h"
@@ -132,6 +133,9 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 
     if (fileType == "mp3") {
         coverQImg = load_cover_image_mpeg(m_music_list[index.row()][8].toStdString().data());
+        if (coverQImg.size().width() > 200 || coverQImg.size().height() > 200) {
+            coverQImg.scaled(200, 200);
+        }
         ui->statusbar->showMessage(tr( " loaded"), 200);
     }
     else {
@@ -139,6 +143,8 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
         coverQImg = QImage("../../app/logo1.png");
     }
 
+
+    coverQImg.scaled(200, 200);
 
     QGraphicsScene *scene = new QGraphicsScene();
     ui->imageSong->setScene(scene);
@@ -160,16 +166,19 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 void MainWindow::on_pushButton_clicked()
 {
     auto newSongTag = m_tableViewer->getResult();
-    cout << "n size =" << newSongTag.size() << endl;
+//    cout << "n size =" << newSongTag.size() << endl;
 
     //    QString save_to_file = m_music_list[m_tableViewer->getIndex().row()][8];
 
     modify_tags(newSongTag);
 
-    set_image_mpeg( newSongTag[8].toStdString().data(), "../../app/Moby_cover.jpg");
+
     m_music_list[m_tableViewer->getIndex().row()] = std::move(newSongTag);
     m_tableModel->music_list_add(m_music_list);
+
     ui->mainMusicTable->setModel(m_tableModel);
+
+
 }
 
 
@@ -219,31 +228,40 @@ void MainWindow::on_statusVolume_valueChanged(int value)
     m_player->setVolume(value);
 }
 
+void MainWindow::on_serarch_line_returnPressed()
+{
 
+}
 
+void MainWindow::on_change_cover_button_clicked()
+{
+    auto currentSongTag = m_tableViewer->getResult();
+    std::string current_file = currentSongTag[0].toStdString();
+    std::string fileType = current_file.substr(current_file.size() - 3);
 
-//    QImage coverQImg("app/logo1.png");
-/*
-    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
-    TagLib::MPEG::File mpegFile(m_music_list[index.row()][8].toStdString().data());
-    TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
-    TagLib::ID3v2::FrameList Frame;
-    TagLib::ID3v2::AttachedPictureFrame *PicFrame;
-    if (id3v2tag) {
-        Frame = id3v2tag->frameListMap()[IdPicture];
-        if (!Frame.isEmpty()) {
-            for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
-                std::cout << "for "<< *it << std::endl;
-                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
-                {
-//                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
-                    if (PicFrame) {
-//                        std::cout << "id3v2 presents!!!@@@@@@@@@@@@@@@@@@@@@@";
-                        coverQImg.loadFromData((const uchar *) PicFrame->picture().data(), PicFrame->picture().size());
-                        ui->statusbar->showMessage(tr("image loaded"), 200);
-                    }
-                }
-            }
-        }
+    if (fileType == "mp3") {
+        QString file_image = QFileDialog::getOpenFileName(
+                this,
+                tr("Open File"),
+                "~/",
+                "Images (*.png *.jpg)"
+        );
+        set_image_mpeg(currentSongTag[8].toStdString().data(), file_image.toStdString().data());
+        ui->statusbar->showMessage(tr(file_image.toStdString().data()), 2000);
     }
-*/
+    else {
+        ui->statusbar->showMessage(tr("error cover not editible"), 2000);
+    }
+
+}
+
+//void MainWindow::on_pushButton_2_clicked()
+//{
+//    if (ui->fileBrowser->isHidden()) {
+//        ui->fileBrowser->show();
+//        ui->mainMusicTable->resize();
+//    } else {
+//        ui->fileBrowser->hide();
+//        ui->mainMusicTable->resize();
+//    }
+//}

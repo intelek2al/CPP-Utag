@@ -28,6 +28,7 @@ set(SOURCES main.cpp src/mainwindow.cpp
         src/tableviewer.cpp
         src/SoundPlayer.cpp
         src/sound_tags.cpp
+        src/logger.cpp
         )
 
 set(HEADERS src/mainwindow.h
@@ -36,6 +37,7 @@ set(HEADERS src/mainwindow.h
         src/tableviewer.h
         src/SoundPlayer.h
         src/sound_tags.h
+        src/logger.h
         )
 
 set(UI src/mainwindow.ui)

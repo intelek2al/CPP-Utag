@@ -56,8 +56,7 @@ void Sound_tags::read_tags(QString file, QString file_path) {
 }
 
 Sound_tags::~Sound_tags() {
-
-    std::cout << "destructor Sound_tags" << std::endl;
+//    std::cout << "destructor Sound_tags" << std::endl;
     delete sound_file;
 }
 
