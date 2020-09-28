@@ -56,6 +56,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     m_dirmodel->setRootPath(m_path);
     ui->fileBrowser->setModel(m_dirmodel);
     ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
+
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {
         ui->fileBrowser->hideColumn(i);
@@ -125,26 +126,22 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
 void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 {
     QVector<QString> current = m_music_list[index.row()];
-
     std::string fileName = m_music_list[index.row()][0].toStdString().data();
-//    std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
     std::string fileType = fileName.substr(fileName.size() - 3);
     QImage coverQImg;
 
     if (fileType == "mp3") {
         coverQImg = load_cover_image_mpeg(m_music_list[index.row()][8].toStdString().data());
-        if (coverQImg.size().width() > 200 || coverQImg.size().height() > 200) {
-            coverQImg.scaled(200, 200);
-        }
+        ui->statusbar->showMessage(tr( " loaded"), 200);
+    }
+    else if (fileType == "m4a") {
+        coverQImg = load_cover_image_m4a(m_music_list[index.row()][8].toStdString().data());
         ui->statusbar->showMessage(tr( " loaded"), 200);
     }
     else {
         ui->statusbar->showMessage(tr(" cover is unsupported." ), 200);
         coverQImg = QImage("../../app/logo1.png");
     }
-
-
-    coverQImg.scaled(200, 200);
 
     QGraphicsScene *scene = new QGraphicsScene();
     ui->imageSong->setScene(scene);
@@ -166,22 +163,11 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 void MainWindow::on_pushButton_clicked()
 {
     auto newSongTag = m_tableViewer->getResult();
-//    cout << "n size =" << newSongTag.size() << endl;
-
-    //    QString save_to_file = m_music_list[m_tableViewer->getIndex().row()][8];
-
     modify_tags(newSongTag);
-
-
     m_music_list[m_tableViewer->getIndex().row()] = std::move(newSongTag);
     m_tableModel->music_list_add(m_music_list);
-
     ui->mainMusicTable->setModel(m_tableModel);
-
-
 }
-
-
 
 void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
 {
@@ -244,8 +230,9 @@ void MainWindow::on_change_cover_button_clicked()
                 this,
                 tr("Open File"),
                 "~/",
-                "Images (*.png *.jpg)"
+                tr("Images (*.png *.jpg)")
         );
+
         set_image_mpeg(currentSongTag[8].toStdString().data(), file_image.toStdString().data());
         ui->statusbar->showMessage(tr(file_image.toStdString().data()), 2000);
     }
@@ -265,3 +252,8 @@ void MainWindow::on_change_cover_button_clicked()
 //        ui->mainMusicTable->resize();
 //    }
 //}
+
+void MainWindow::on_actionlog_triggered()
+{
+    ui->statusbar->showMessage(tr("menu log"), 2000);
+}

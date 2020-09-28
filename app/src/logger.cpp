@@ -10,9 +10,15 @@ Logger::~Logger() {
 }
 
 QVector<QString> Logger::show_logger() const {
-    return logger;
+    return m_logger;
 }
 
 void Logger::add_log_massage(QString& message) {
-    logger.push_back(message);
+    QDate current_date;
+
+    current_date.currentDate();
+
+    current_date.toString( Qt::ISODate);
+    QString event = current_date.toString( Qt::ISODate) + message;
+    m_logger.push_back(event);
 }

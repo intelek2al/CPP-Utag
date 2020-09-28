@@ -70,47 +70,7 @@ void load_lyrics(char *file_name) {
     $14     Publisher/Studio logotype
  */
 
-void load_cover(char *file_name) {
-    static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
-
-    TagLib::MPEG::File mpegFile(file_name);
-    TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
-    TagLib::ID3v2::FrameList Frame;
-    TagLib::ID3v2::AttachedPictureFrame *PicFrame;
-
-    void *SrcImage;
-    unsigned long Size = 0;
-
-    FILE *jpegFile;
-    jpegFile = fopen("FromId3.jpg", "wb");
-
-    if (id3v2tag) {
-        // picture frame
-        Frame = id3v2tag->frameListMap()[IdPicture];
-        if (!Frame.isEmpty()) {
-            for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
-                PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
-                {
-                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
-
-                        // extract image (in it’s compressed form)
-                        Size = PicFrame->picture().size();
-                    SrcImage = malloc(Size);
-                    if (SrcImage) {
-                        memcpy(SrcImage, PicFrame->picture().data(), Size);
-                        fwrite(SrcImage, Size, 1, jpegFile);
-                        fclose(jpegFile);
-                        free(SrcImage);
-                    }
-                }
-            }
-        }
-    }
-    else {
-        std::cout << "id3v2 not present";
-    }
-}
-
+// deprecated!!!!!!!!!!!!
 
 QImage load_cover_image(char *file_path) {
 //    QImage coverQImg("app/logo1.png");
@@ -142,16 +102,12 @@ QImage load_cover_image(char *file_path) {
     return coverQImg;
 }
 
-
-
-
 unsigned int str_to_uint(const char* new_value) {
     unsigned int res = 0;
 
     std::regex regular(R"lit(\s*[0-9]+\s*)lit");
     std::cmatch result;
     std::string line = new_value;
-
     if (std::regex_match(line.c_str(), result, regular)) {
 //        std::cout << "result[0]" << result[0] << std::endl;
         res = std::stoul(result[0]);
@@ -336,52 +292,6 @@ void modify_tag_track(QVector<QString>& changes) {
     f.save();
 }
 
-void modify_tag(char *file_path, char field, char *new_value) {
-    TagLib::FileRef f(file_path);
-    if (!f.isNull() && f.tag()) {
-        unsigned int new_year = 0;
-        unsigned int new_track = 0;
-        TagLib::Tag *tag = f.tag();
-        switch (field) {
-            case 't':
-                tag->setTitle(new_value);
-                break;
-            case 'a':
-                tag->setArtist(new_value);
-                break;
-            case 'A':
-                tag->setAlbum(new_value);
-                break;
-            case 'c':
-                tag->setComment(new_value);
-                break;
-            case 'g':
-                tag->setGenre(new_value);
-                break;
-            case 'y':
-                try {
-                    new_year = str_to_uint(new_value);
-                }
-                catch (std::exception& ex) {
-                    std::cerr << ex.what();
-                    break;
-                }
-                tag->setYear(new_year);
-                break;
-
-            case 'T':
-
-            try {
-                new_track = str_to_uint(new_value);
-            }
-            catch (std::exception& ex) {
-                std::cerr << ex.what();
-                break;
-            }
-                tag->setTrack(new_track);
-        }
-    }
-}
 
 //{"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
 
@@ -420,6 +330,10 @@ QImage load_cover_image_mpeg(char *file_path)
             static_cast<TagLib::ID3v2::AttachedPictureFrame *>(l.front());
 
     image.loadFromData((const uchar *) f->picture().data(), f->picture().size());
+
+    if (image.size().width() > 200 || image.size().height() > 200) {
+        image = image.scaled(200, 200);
+    }
     return image;
 }
 
@@ -442,6 +356,9 @@ QImage load_cover_image_m4a(char *file_path)
         TagLib::MP4::CoverArt coverArt = coverArtList.front();
         image.loadFromData((const uchar *)
                                    coverArt.data().data(), coverArt.data().size());
+        if (image.size().width() > 200 || image.size().height() > 200) {
+            image = image.scaled(200, 200);
+        }
         return QImage();
     }
 }

@@ -8,6 +8,7 @@
 
 #include <QString>
 #include <QVector>
+#include <QDate>
 
 class Logger {
 public:
@@ -19,7 +20,7 @@ public:
     QVector<QString> show_logger() const;
 
 private:
-    QVector<QString> logger {0};
+    QVector<QString> m_logger {0};
 };
 
 

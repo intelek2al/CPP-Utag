@@ -22,6 +22,7 @@
 #include "musictablemodel.h"
 #include "sound_tags.h"
 #include "SoundPlayer.h"
+#include "logger.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -61,6 +62,8 @@ private slots:
     void on_serarch_line_returnPressed();
 
     void on_change_cover_button_clicked();
+
+    void on_actionlog_triggered();
 
 //    void on_pushButton_2_clicked();
 
