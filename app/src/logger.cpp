@@ -4,7 +4,9 @@
 
 #include "logger.h"
 
-Logger::Logger() {}
+Logger::Logger() {
+//    ui = child;
+}
 
 Logger::~Logger() {
 }

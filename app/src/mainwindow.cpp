@@ -49,13 +49,15 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
 {
     ui->setupUi(this);
 
-    m_player = new SoundPlayer(ui);
+    m_player = new soundPlayer(ui);
     m_tableViewer = new TableViewer(ui->tableInfoSong);
     m_dirmodel = new QFileSystemModel(this);
     m_dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
     m_dirmodel->setRootPath(m_path);
     ui->fileBrowser->setModel(m_dirmodel);
     ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
+
+//    m_log = new Logger();
 
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {

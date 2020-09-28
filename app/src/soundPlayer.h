@@ -8,10 +8,10 @@ namespace Ui {
     class MainWindow;
 }
 
-class SoundPlayer : public QObject {
+class soundPlayer : public QObject {
 public:
-    SoundPlayer(Ui::MainWindow *child);
-    ~SoundPlayer();
+    soundPlayer(Ui::MainWindow *child);
+    ~soundPlayer();
 
     void setSound(QString path);
 

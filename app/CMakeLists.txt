@@ -26,7 +26,7 @@ set(SOURCES main.cpp src/mainwindow.cpp
         src/musictablemodel.cpp
         src/tag_functions.cpp
         src/tableviewer.cpp
-        src/SoundPlayer.cpp
+        src/soundPlayer.cpp
         src/sound_tags.cpp
         src/logger.cpp
         )
@@ -35,7 +35,7 @@ set(HEADERS src/mainwindow.h
         src/tag_functions.h
         src/musictablemodel.h
         src/tableviewer.h
-        src/SoundPlayer.h
+        src/soundPlayer.h
         src/sound_tags.h
         src/logger.h
         )

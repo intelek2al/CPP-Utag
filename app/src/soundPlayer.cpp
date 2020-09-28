@@ -1,24 +1,24 @@
-#include "SoundPlayer.h"
+#include "soundPlayer.h"
 #include "ui_mainwindow.h"
 
-SoundPlayer::SoundPlayer(Ui::MainWindow *child)
+soundPlayer::soundPlayer(Ui::MainWindow *child)
 {
     m_player = new QMediaPlayer();
     ui = child;
-    connect(m_player, &QMediaPlayer::positionChanged, this, &SoundPlayer::setPosition);
-    connect(m_player, &QMediaPlayer::stateChanged, this, &SoundPlayer::stateCheck);
+    connect(m_player, &QMediaPlayer::positionChanged, this, &soundPlayer::setPosition);
+    connect(m_player, &QMediaPlayer::stateChanged, this, &soundPlayer::stateCheck);
     ui->labelSong->setText("");
     ui->labelArtist->setText("");
 }
 
-SoundPlayer::~SoundPlayer()
+soundPlayer::~soundPlayer()
 {
     delete m_player;
 }
 
 #include <QMediaMetaData>
 
-void SoundPlayer::setSound(QString path)
+void soundPlayer::setSound(QString path)
 {
     m_player->setMedia(QUrl::fromLocalFile(path));
     if (m_player->isMetaDataAvailable())
@@ -34,7 +34,7 @@ void SoundPlayer::setSound(QString path)
     ui->playButton->click();
 }
 
-void SoundPlayer::stateCheck(QMediaPlayer::State state) {
+void soundPlayer::stateCheck(QMediaPlayer::State state) {
     if(state == QMediaPlayer::PlayingState) {
         ui->playButton->setEnabled(false);
         ui->pauseButton->setEnabled(true);
@@ -57,7 +57,7 @@ void SoundPlayer::stateCheck(QMediaPlayer::State state) {
     }
 }
 
-void SoundPlayer::setPlay()
+void soundPlayer::setPlay()
 {
     if (m_player->isMetaDataAvailable()) {
         ui->labelSong->setText(m_player->metaData(QStringLiteral("Title")).toString());
@@ -67,22 +67,22 @@ void SoundPlayer::setPlay()
     m_player->play();
 }
 
-void SoundPlayer::setPause()
+void soundPlayer::setPause()
 {
     m_player->pause();
 }
 
-void SoundPlayer::setStop()
+void soundPlayer::setStop()
 {
     m_player->stop();
 }
 
-void SoundPlayer::setVolume(int position)
+void soundPlayer::setVolume(int position)
 {
     m_player->setVolume(position);
 }
 
-void SoundPlayer::setPosition(int position)
+void soundPlayer::setPosition(int position)
 {
     if (ui->statusPlay->maximum() != m_player->duration())
        ui->statusPlay->setMaximum(static_cast<int>(m_player->duration()));
@@ -95,7 +95,7 @@ void SoundPlayer::setPosition(int position)
     ui->labelTime->setText(time.toString());
 }
 
-void SoundPlayer::setMovedPosition(int position)
+void soundPlayer::setMovedPosition(int position)
 {
     m_player->setPosition(position);
 }

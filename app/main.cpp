@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 
-#include "src/tag_functions.h"
 #include "src/mainwindow.h"
 
 #include <sys/stat.h>
@@ -16,12 +15,11 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QStringList>
-//#include <QMediaMetaData>
 #include <QDir>
+
 using std::cout;
 using std::endl;
 
-#include <QApplication>
 
 int main(int argc, char **argv)
 {

@@ -21,7 +21,7 @@
 #include "tableviewer.h"
 #include "musictablemodel.h"
 #include "sound_tags.h"
-#include "SoundPlayer.h"
+#include "soundPlayer.h"
 #include "logger.h"
 
 QT_BEGIN_NAMESPACE
@@ -30,7 +30,7 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
-class SoundPlayer;
+class soundPlayer;
 
 class MainWindow : public QMainWindow
 {
@@ -73,8 +73,9 @@ private:
     QVector<QVector<QString>> m_music_list;
     TableViewer *m_tableViewer;
     MusicTableModel *m_tableModel;
-    SoundPlayer *m_player;
+    soundPlayer *m_player;
     QString m_path;
+//    Logger m_log;
 
     void setMusicPlay(QString soundPath);
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);

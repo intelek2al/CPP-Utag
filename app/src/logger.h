@@ -1,14 +1,13 @@
-//
-// Created by Serhiy Nikolayenko on 9/28/20.
-//
-
 #ifndef UTAG_LOGGER_H
 #define UTAG_LOGGER_H
-
 
 #include <QString>
 #include <QVector>
 #include <QDate>
+
+namespace Ui {
+    class MainWindow;
+}
 
 class Logger {
 public:
@@ -20,6 +19,7 @@ public:
     QVector<QString> show_logger() const;
 
 private:
+//    Ui::MainWindow *ui;
     QVector<QString> m_logger {0};
 };
 
