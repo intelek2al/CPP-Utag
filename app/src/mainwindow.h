@@ -23,6 +23,7 @@
 #include "sound_tags.h"
 #include "soundPlayer.h"
 #include "logger.h"
+#include "searcher.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,7 +31,7 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
-class soundPlayer;
+class SoundPlayer;
 
 class MainWindow : public QMainWindow
 {
@@ -59,13 +60,13 @@ private slots:
 
     void on_statusVolume_valueChanged(int value);
 
-    void on_serarch_line_returnPressed();
-
     void on_change_cover_button_clicked();
 
     void on_actionlog_triggered();
 
 //    void on_pushButton_2_clicked();
+
+    void on_serarch_line_editingFinished();
 
 private:
     Ui::MainWindow *ui;
@@ -73,9 +74,10 @@ private:
     QVector<QVector<QString>> m_music_list;
     TableViewer *m_tableViewer = nullptr;
     MusicTableModel *m_tableModel;
-    soundPlayer *m_player;
+    SoundPlayer *m_player;
     QString m_path;
     Logger *m_log;
+    Searcher *m_searcher;
 
     void setMusicPlay(QString soundPath);
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);
