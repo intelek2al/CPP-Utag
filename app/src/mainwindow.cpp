@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <algorithm>
 #include "mainwindow.h"
 #include "sound_tags.h"
 #include "ui_mainwindow.h"
@@ -49,7 +50,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
 {
     ui->setupUi(this);
 
-    m_player = new soundPlayer(ui);
+    m_player = new SoundPlayer(ui);
     m_tableViewer = new TableViewer(ui->tableInfoSong);
     m_dirmodel = new QFileSystemModel(this);
     m_dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
@@ -58,6 +59,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
     ui->log->setHidden(true);
     m_log = new Logger(ui);
+    m_searcher = new Searcher{ui->serarch_line, ui->filterBox, &m_music_list};
     ui->verticalLayout_2->setAlignment(ui->cover_label_large, Qt::AlignmentFlag::AlignCenter);
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {
@@ -70,6 +72,7 @@ MainWindow::~MainWindow()
 {
     delete m_tableViewer;
     delete m_dirmodel;
+    delete m_searcher;
     //    deleteLater()
     system("leaks -q utag");
     delete ui;
@@ -122,6 +125,7 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
             m_music_list.push_back(tmp);
     }
 
+    m_searcher->setDown();
     m_tableModel->music_list_add(m_music_list);
     ui->mainMusicTable->setModel(m_tableModel);
 }
@@ -247,11 +251,6 @@ void MainWindow::on_statusVolume_valueChanged(int value)
     m_player->setVolume(value);
 }
 
-void MainWindow::on_serarch_line_returnPressed()
-{
-
-}
-
 void MainWindow::on_change_cover_button_clicked()
 {
     auto currentSongTag = m_tableViewer->getResult();
@@ -280,6 +279,8 @@ void MainWindow::on_change_cover_button_clicked()
 
 }
 
+
+
 //void MainWindow::on_pushButton_2_clicked()
 //{
 //    if (ui->fileBrowser->isHidden()) {
@@ -294,4 +295,18 @@ void MainWindow::on_change_cover_button_clicked()
 void MainWindow::on_actionlog_triggered()
 {
     ui->statusbar->showMessage(tr("menu log"), 2000);
+}
+
+void MainWindow::on_serarch_line_editingFinished()
+{
+    auto tmp = m_searcher->search();
+//    m_music_list.clear();
+//    std::move(tmp.begin(), tmp.end(), std::back_inserter(m_music_list));
+    m_music_list = tmp;
+    if (!m_tableModel)
+        delete m_tableModel;
+    m_tableModel = new MusicTableModel(ui->mainMusicTable);
+    m_tableModel->music_list_add(m_music_list);
+    ui->mainMusicTable->setModel(m_tableModel);
+    ui->mainMusicTable->viewport()->update();
 }

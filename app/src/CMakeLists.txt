@@ -5,6 +5,7 @@ set(SOURCES mainwindow.cpp
         musictablemodel.cpp
         tag_functions.cpp
         tableviewer.cpp
+        searcher.cpp
         SoundPlayer.cpp
         logger.cpp
         )
@@ -14,6 +15,7 @@ set(HEADERS mainwindow.h
         tag_functions.h
         musictablemodel.h
         tableviewer.h
+        searcher.h
         SoundPlayer.h
         logger.h
         )
