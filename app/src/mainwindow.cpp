@@ -56,7 +56,6 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     m_dirmodel->setRootPath(m_path);
     ui->fileBrowser->setModel(m_dirmodel);
     ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
-
 //    m_log = new Logger();
 
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
@@ -184,6 +183,44 @@ void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
     //    ui->imageSong->show();
     outputCurrentInfo(current, index);
     setMusicPlay(current[8]);
+
+    std::string fileName = m_music_list[index.row()][0].toStdString().data();
+    std::string fileType = fileName.substr(fileName.size() - 3);
+    QImage coverQImg;
+
+    if (fileType == "mp3") {
+        coverQImg = load_cover_image_mpeg(m_music_list[index.row()][8].toStdString().data());
+        ui->statusbar->showMessage(tr( " loaded"), 200);
+    }
+    else if (fileType == "m4a") {
+        coverQImg = load_cover_image_m4a(m_music_list[index.row()][8].toStdString().data());
+        ui->statusbar->showMessage(tr( " loaded"), 200);
+    }
+    else {
+        ui->statusbar->showMessage(tr(" cover is unsupported." ), 200);
+        coverQImg = QImage("../../app/logo1.png");
+    }
+
+//    coverQImg = coverQImg.scaled(35,35);
+
+/*
+    QLabel::setScaledContents(true).
+
+    QGraphicsScene *scene = new QGraphicsScene();
+
+    ui->graphicsView->setScene(scene);
+
+//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+//    scene->addItem(item);
+
+    QPixmap pix = QPixmap::fromImage(coverQImg);
+    scene->addPixmap(pix);
+    ui->imageSong->show();
+*/
+//    QLabel::cover_label.set(true).
+    QPixmap pix(QPixmap::fromImage(coverQImg));
+//    ui->cover_label->setStyleSheet("border-image:url(:/2.png);");
+    ui->cover_label->setPixmap(pix);
 }
 
 void MainWindow::setMusicPlay(QString soundPath)

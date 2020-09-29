@@ -193,29 +193,23 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,8,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,8,1">
           <property name="sizeConstraint">
            <enum>QLayout::SetFixedSize</enum>
           </property>
           <item>
-           <widget class="QGraphicsView" name="graphicsView">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-              <horstretch>40</horstretch>
-              <verstretch>40</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>40</width>
-              <height>40</height>
-             </size>
-            </property>
+           <widget class="QLabel" name="cover_label">
             <property name="maximumSize">
              <size>
               <width>40</width>
               <height>40</height>
              </size>
+            </property>
+            <property name="text">
+             <string>cover</string>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -349,7 +343,7 @@ color: rgb(132, 130, 133);</string>
      </layout>
     </item>
     <item row="1" column="0">
-     <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="3,7,3,0,0,0">
+     <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="3,7,3,0,0">
       <property name="sizeConstraint">
        <enum>QLayout::SetNoConstraint</enum>
       </property>

@@ -1,7 +1,3 @@
-//
-// Created by Serhiy Nikolayenko on 9/28/20.
-//
-
 #include "logger.h"
 
 Logger::Logger() {
