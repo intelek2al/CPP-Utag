@@ -171,6 +171,9 @@ void MainWindow::on_pushButton_clicked()
 {
     auto newSongTag = m_tableViewer->getResult();
 
+    if (newSongTag[8].isEmpty()) {
+        return;
+    }
     modify_tags(newSongTag);
     m_music_list[m_tableViewer->getIndex().row()] = std::move(newSongTag);
     m_tableModel->music_list_add(m_music_list);

@@ -146,7 +146,7 @@
 ##target_include_directories(utag INTERFACE "../3dparty/taglib/taglib/")
 
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
