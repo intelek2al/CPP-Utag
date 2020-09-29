@@ -57,7 +57,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     ui->fileBrowser->setModel(m_dirmodel);
     ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
 //    m_log = new Logger();
-
+    ui->verticalLayout_2->setAlignment(ui->cover_label_large, Qt::AlignmentFlag::AlignCenter);
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {
         ui->fileBrowser->hideColumn(i);
@@ -144,12 +144,17 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
         coverQImg = QImage("../../app/logo1.png");
     }
 
-    QGraphicsScene *scene = new QGraphicsScene();
-    ui->imageSong->setScene(scene);
+    QPixmap pix(QPixmap::fromImage(coverQImg));
+    ui->cover_label_large->setPixmap(pix);
 
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
-    scene->addItem(item);
-    ui->imageSong->show();
+
+
+//    QGraphicsScene *scene = new QGraphicsScene();
+//    ui->imageSong->setScene(scene);
+//
+//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+//    scene->addItem(item);
+//    ui->imageSong->show();
 
     //    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
     //    ui->statusbar->showMessage(tr("image loaded"), 200);
@@ -201,25 +206,7 @@ void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
         coverQImg = QImage("../../app/logo1.png");
     }
 
-//    coverQImg = coverQImg.scaled(35,35);
-
-/*
-    QLabel::setScaledContents(true).
-
-    QGraphicsScene *scene = new QGraphicsScene();
-
-    ui->graphicsView->setScene(scene);
-
-//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
-//    scene->addItem(item);
-
-    QPixmap pix = QPixmap::fromImage(coverQImg);
-    scene->addPixmap(pix);
-    ui->imageSong->show();
-*/
-//    QLabel::cover_label.set(true).
     QPixmap pix(QPixmap::fromImage(coverQImg));
-//    ui->cover_label->setStyleSheet("border-image:url(:/2.png);");
     ui->cover_label->setPixmap(pix);
 }
 

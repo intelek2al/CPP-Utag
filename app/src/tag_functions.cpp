@@ -331,9 +331,9 @@ QImage load_cover_image_mpeg(char *file_path)
 
     image.loadFromData((const uchar *) f->picture().data(), f->picture().size());
 
-    if (image.size().width() > 200 || image.size().height() > 200) {
-        image = image.scaled(200, 200);
-    }
+//    if (image.size().width() > 200 || image.size().height() > 200) {
+//        image = image.scaled(200, 200);
+//    }
     return image;
 }
 
@@ -356,9 +356,9 @@ QImage load_cover_image_m4a(char *file_path)
         TagLib::MP4::CoverArt coverArt = coverArtList.front();
         image.loadFromData((const uchar *)
                                    coverArt.data().data(), coverArt.data().size());
-        if (image.size().width() > 200 || image.size().height() > 200) {
-            image = image.scaled(200, 200);
-        }
+//        if (image.size().width() > 200 || image.size().height() > 200) {
+//            image = image.scaled(200, 200);
+//        }
         return QImage();
     }
 }

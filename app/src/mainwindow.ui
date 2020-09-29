@@ -423,12 +423,34 @@ color: rgb(132, 130, 133);</string>
        </widget>
       </item>
       <item row="0" column="2">
-       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,0,4,0">
+       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,5,0">
         <property name="spacing">
          <number>-1</number>
         </property>
         <item>
-         <widget class="QGraphicsView" name="imageSong"/>
+         <widget class="QLabel" name="cover_label_large">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>240</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>240</width>
+            <height>240</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>cover</string>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="change_cover_button">
@@ -579,6 +601,9 @@ color: rgb(132, 130, 133);</string>
    <property name="text">
     <string>Quit Utag</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
  </widget>
  <resources/>
@@ -596,6 +621,22 @@ color: rgb(132, 130, 133);</string>
     <hint type="destinationlabel">
      <x>928</x>
      <y>372</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionexit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>649</x>
+     <y>312</y>
     </hint>
    </hints>
   </connection>
