@@ -1,25 +1,33 @@
+#include <QFile>
+#include <iostream>
 #include "logger.h"
 #include "ui_mainwindow.h"
 
 Logger::Logger(Ui::MainWindow *child) {
     ui = child;
+
+//    QFile data("log.txt");
+//    if (data.open(QFile::WriteOnly | QFile::Truncate)) {
+//        QTextStream m_logs(&data);
+//        m_logger << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz ")
+//         << "start utag" << "\n";
+//    }
+
 }
 
 Logger::~Logger() {
 
 }
 
-QVector<QString> Logger::show_logger() const {
-
-    return m_logger;
+void Logger::show_logger() const {
+    ui->log->setText(m_logger);
 }
 
-void Logger::add_log_massage(QString& message) {
-    QDate current_date;
-
-    current_date.currentDate();
-
-    current_date.toString( Qt::ISODate);
-    QString event = current_date.toString( Qt::ISODate) + message;
-    m_logger.push_back(event);
+void Logger::add_log_massage(QString message) {
+    m_logger += QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz ") + " " + message + "\n";
+    show_logger();
 }
+
+//Logger& Logger::operator += (Logger& log, QString message) {
+//    log.m_logger += QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz ") + " " + message + "\n";
+//}

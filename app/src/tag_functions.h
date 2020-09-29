@@ -50,7 +50,7 @@ QImage load_cover_image_mpeg(char *file_path);
 QImage load_cover_image_m4a(char *file_path);
 QImage load_cover_image_ogg(char *file_path);
 
-void set_image_mpeg(char *file_path, char *image_path);
+bool set_image_mpeg(char *file_path, char *image_path);
 
 void modify_tag_artist(char *file_path, char *new_artist);
 
@@ -63,7 +63,7 @@ void modify_tag_comment(char *file_path, char *new_comment);
 void modify_tag_year(QVector<QString>& changes);
 void modify_tag_track(QVector<QString>& changes);
 
-void modify_tags(QVector<QString>& changes);
+bool modify_tags(QVector<QString>& changes);
 
 
 

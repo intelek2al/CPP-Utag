@@ -295,7 +295,11 @@ void modify_tag_track(QVector<QString>& changes) {
 
 //{"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
 
-void modify_tags(QVector<QString>& changes) {
+bool modify_tags(QVector<QString>& changes) {
+    if (QFile file(changes[8]); !file.isWritable()) {
+        return false;
+    }
+
     TagLib::FileRef f(changes[8].toStdString().data());
     std::cout << "line 382\n" << std::endl;
 
@@ -311,6 +315,7 @@ void modify_tags(QVector<QString>& changes) {
     f.save();
     modify_tag_year(changes);
     modify_tag_track(changes);
+    return true;
 }
 
 QImage load_cover_image_mpeg(char *file_path)
@@ -367,8 +372,13 @@ QImage load_cover_image_ogg(char *file_path) {
     return QImage();
 }
 
-void set_image_mpeg(char *file_path, char *image_path)
+bool set_image_mpeg(char *file_path, char *image_path)
 {
+    QFile file(file_path);
+    if (!file.isWritable()) {
+        return false;
+    }
+
     TagLib::MPEG::File mpegFile(file_path);
     TagLib::ID3v2::Tag *tag = mpegFile.ID3v2Tag();
     TagLib::ID3v2::FrameList frames = tag->frameList("APIC");
@@ -392,4 +402,5 @@ void set_image_mpeg(char *file_path, char *image_path)
 //    TagLib::ID3v2::AttachedPictureFrame *frame = new TagLib::ID3v2::AttachedPictureFrame;
 //    tag->addFrame(frame);
 //    audioFile.save();
+    return true;
 }

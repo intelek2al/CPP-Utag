@@ -105,12 +105,14 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
     for (int i = 0; i < list.size(); ++i)
     {
         QFileInfo fileInfo = list.at(i);
+        if (!fileInfo.isReadable()) {
+            m_log->add_log_massage(fileInfo.fileName() + " is not readable");
+            continue;
+        }
         QVector<QString> tmp;
         try
         {
             Sound_tags current;
-            //            current.read_tags(fileInfo.fileName(), fileInfo.filePath());
-            //            tmp = current.get_vector();
             tmp = read_tags(toChar(QString(fileInfo.fileName())),
                             toChar(QString(fileInfo.filePath())));
         }
@@ -150,21 +152,6 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
     ui->cover_label_large->setPixmap(pix);
 
 
-
-//    QGraphicsScene *scene = new QGraphicsScene();
-//    ui->imageSong->setScene(scene);
-//
-//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
-//    scene->addItem(item);
-//    ui->imageSong->show();
-
-    //    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
-    //    ui->statusbar->showMessage(tr("image loaded"), 200);
-    //    QGraphicsScene *scene = new QGraphicsScene();
-    //    ui->imageSong->setScene(scene);
-    //    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
-    //    scene->addItem(item);
-    //    ui->imageSong->show();
     outputCurrentInfo(current, index);
 }
 
@@ -175,7 +162,10 @@ void MainWindow::on_pushButton_clicked()
     if (newSongTag[8].isEmpty() || newSongTag[0].isEmpty()) {
         return;
     }
-    modify_tags(newSongTag);
+    if (!(modify_tags(newSongTag))) {
+        m_log->add_log_massage(newSongTag[8] + " is not writable");
+    }
+
     m_music_list[m_tableViewer->getIndex().row()] = std::move(newSongTag);
     m_tableModel->music_list_add(m_music_list);
     ui->mainMusicTable->setModel(m_tableModel);
@@ -271,7 +261,9 @@ void MainWindow::on_change_cover_button_clicked()
                 tr("Images (*.png *.jpg)")
         );
 
-        set_image_mpeg(currentSongTag[8].toStdString().data(), file_image.toStdString().data());
+        if (!(set_image_mpeg(currentSongTag[8].toStdString().data(), file_image.toStdString().data()))) {
+            m_log->add_log_massage(currentSongTag[8] + " not writable");
+        }
         ui->statusbar->showMessage(tr(file_image.toStdString().data()), 2000);
     }
     else {
@@ -280,18 +272,28 @@ void MainWindow::on_change_cover_button_clicked()
 
 }
 
-//void MainWindow::on_pushButton_2_clicked()
-//{
-//    if (ui->fileBrowser->isHidden()) {
-//        ui->fileBrowser->show();
-//        ui->mainMusicTable->resize();
-//    } else {
-//        ui->fileBrowser->hide();
-//        ui->mainMusicTable->resize();
-//    }
-//}
 
 void MainWindow::on_actionlog_triggered()
 {
+    m_log->show_logger();
     ui->statusbar->showMessage(tr("menu log"), 2000);
 }
+
+
+
+
+
+//    QGraphicsScene *scene = new QGraphicsScene();
+//    ui->imageSong->setScene(scene);
+//
+//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+//    scene->addItem(item);
+//    ui->imageSong->show();
+
+//    QImage coverQImg = load_cover_image(m_music_list[index.row()][8].toStdString().data());
+//    ui->statusbar->showMessage(tr("image loaded"), 200);
+//    QGraphicsScene *scene = new QGraphicsScene();
+//    ui->imageSong->setScene(scene);
+//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(coverQImg));
+//    scene->addItem(item);
+//    ui->imageSong->show();

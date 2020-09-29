@@ -4,6 +4,7 @@
 #include <QString>
 #include <QVector>
 #include <QDate>
+#include <QTextStream>
 
 namespace Ui {
     class MainWindow;
@@ -14,13 +15,16 @@ public:
     Logger(Ui::MainWindow *child);
     virtual ~Logger();
 
-    void add_log_massage(QString& message);
+    void add_log_massage(QString message);
 
-    QVector<QString> show_logger() const;
+    void show_logger() const;
+//    Logger& operator += (Logger& log, QString message);
+
+
 
 private:
     Ui::MainWindow *ui;
-    QVector<QString> m_logger {0};
+    QString m_logger;
 };
 
 
