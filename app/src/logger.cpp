@@ -1,13 +1,16 @@
 #include "logger.h"
+#include "ui_mainwindow.h"
 
-Logger::Logger() {
-//    ui = child;
+Logger::Logger(Ui::MainWindow *child) {
+    ui = child;
 }
 
 Logger::~Logger() {
+
 }
 
 QVector<QString> Logger::show_logger() const {
+
     return m_logger;
 }
 

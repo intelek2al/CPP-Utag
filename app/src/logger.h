@@ -11,7 +11,7 @@ namespace Ui {
 
 class Logger {
 public:
-    Logger();
+    Logger(Ui::MainWindow *child);
     virtual ~Logger();
 
     void add_log_massage(QString& message);
@@ -19,7 +19,7 @@ public:
     QVector<QString> show_logger() const;
 
 private:
-//    Ui::MainWindow *ui;
+    Ui::MainWindow *ui;
     QVector<QString> m_logger {0};
 };
 

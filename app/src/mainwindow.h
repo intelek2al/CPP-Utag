@@ -71,11 +71,11 @@ private:
     Ui::MainWindow *ui;
     QFileSystemModel *m_dirmodel;
     QVector<QVector<QString>> m_music_list;
-    TableViewer *m_tableViewer;
+    TableViewer *m_tableViewer = nullptr;
     MusicTableModel *m_tableModel;
     soundPlayer *m_player;
     QString m_path;
-//    Logger *m_log {nullptr};
+    Logger *m_log;
 
     void setMusicPlay(QString soundPath);
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);

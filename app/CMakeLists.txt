@@ -154,6 +154,7 @@ find_library(TAGLIB tag)
 
 include_directories(./src/)
 #include_directories("../build/app/src/src_autogen/include")#
+include_directories("../cmake-build-debug/app/src/src_autogen/include")
 include_directories(../3dparty/taglib/)
 include_directories(../3dparty/taglib/taglib/)
 include_directories(../3dparty/taglib/taglib/mpeg/)

@@ -57,7 +57,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     ui->fileBrowser->setModel(m_dirmodel);
     ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
     ui->log->setHidden(true);
-//    m_log = new Logger();
+    m_log = new Logger(ui);
     ui->verticalLayout_2->setAlignment(ui->cover_label_large, Qt::AlignmentFlag::AlignCenter);
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {
@@ -95,7 +95,8 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
     //    current_directory.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     //    current_directory.setSorting(QDir::Size | QDir::Reversed);
 
-    delete m_tableModel;
+    if (!m_tableModel)
+        delete m_tableModel;
     m_tableModel = new MusicTableModel(ui->mainMusicTable);
 
     QFileInfoList list = current_directory.entryInfoList();
@@ -171,7 +172,7 @@ void MainWindow::on_pushButton_clicked()
 {
     auto newSongTag = m_tableViewer->getResult();
 
-    if (newSongTag[8].isEmpty()) {
+    if (newSongTag[8].isEmpty() || newSongTag[0].isEmpty()) {
         return;
     }
     modify_tags(newSongTag);
@@ -254,6 +255,11 @@ void MainWindow::on_serarch_line_returnPressed()
 void MainWindow::on_change_cover_button_clicked()
 {
     auto currentSongTag = m_tableViewer->getResult();
+
+    if (currentSongTag[8].isEmpty() || currentSongTag[0].isEmpty()) {
+        return;
+    }
+
     std::string current_file = currentSongTag[0].toStdString();
     std::string fileType = current_file.substr(current_file.size() - 3);
 

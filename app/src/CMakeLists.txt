@@ -5,14 +5,18 @@ set(SOURCES mainwindow.cpp
         musictablemodel.cpp
         tag_functions.cpp
         tableviewer.cpp
-        SoundPlayer.cpp)
+        SoundPlayer.cpp
+        logger.cpp
+        )
 
 set(HEADERS mainwindow.h
         sound_tags.h
         tag_functions.h
         musictablemodel.h
         tableviewer.h
-        SoundPlayer.h)
+        SoundPlayer.h
+        logger.h
+        )
 
 set(UI mainwindow.ui)
 
