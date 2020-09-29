@@ -75,7 +75,7 @@ private:
     MusicTableModel *m_tableModel;
     soundPlayer *m_player;
     QString m_path;
-//    Logger m_log;
+//    Logger *m_log {nullptr};
 
     void setMusicPlay(QString soundPath);
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);
