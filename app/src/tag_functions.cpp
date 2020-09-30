@@ -2,7 +2,8 @@
 #include <QImage>
 #include <mp4/mp4file.h>
 #include "tag_functions.h"
-#define default_cover "./app/logo1.png"
+//#define default_cover "./app/resources/logo1.png"
+#define default_cover ":/logo1.png"
 class ImageFile;
 
 /* Unsychronised lyrics/text transcription

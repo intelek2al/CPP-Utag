@@ -164,6 +164,7 @@ include_directories(../3dparty/taglib/taglib/toolkit)
 include_directories(../build/3dparty/taglib/)
 # include_directories("../include/taglib/")#
 
+
 add_compile_options(
     -std=c++1y
 #    -Werror
@@ -183,7 +184,9 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Gui Multimedia Multim
 
 add_subdirectory(src)
 
-add_executable(${CMAKE_PROJECT_NAME} main.cpp)
+qt5_add_resources(RESOURCES resources/myresource.qrc)
+
+add_executable(${CMAKE_PROJECT_NAME} main.cpp ${RESOURCES})
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Gui
