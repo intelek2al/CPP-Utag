@@ -1,8 +1,8 @@
-#include <QFileDialog>
-#include <algorithm>
 #include "mainwindow.h"
 #include "sound_tags.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
+#include <algorithm>
 
 //    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
 
@@ -32,12 +32,6 @@ using std::endl;
 char *toChar(QString str)
 {
     char *test = str.toUtf8().data();
-    //    std::cout << "run function toChar " << str.toStdString().data() << "|" << test << std::endl;
-    //    QByteArray ba = str.toUtf8();
-    //    return ba.data();
-
-    //    QByteArray array = str.toLocal8Bit();
-    //    char* buffer = array.data();
     return test;
 }
 
@@ -73,7 +67,6 @@ MainWindow::~MainWindow()
     delete m_tableViewer;
     delete m_dirmodel;
     delete m_searcher;
-    //    deleteLater()
     system("leaks -q utag");
     delete ui;
 }
@@ -109,7 +102,7 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
     {
         QFileInfo fileInfo = list.at(i);
         if (!fileInfo.isReadable()) {
-            m_log->add_log_massage(fileInfo.fileName() + " is not readable");
+            m_log->add_log_massage(fileInfo.fileName() + " not readable");
             continue;
         }
         QVector<QString> tmp;
@@ -148,14 +141,12 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
         ui->statusbar->showMessage(tr( " loaded"), 200);
     }
     else {
-        ui->statusbar->showMessage(tr(" cover is unsupported." ), 200);
+        ui->statusbar->showMessage(tr(" cover is unsupported"), 200);
+        m_log->add_log_massage(m_music_list[index.row()][0] + " cover is unsupported");
         coverQImg = QImage("../../app/logo1.png");
     }
-
     QPixmap pix(QPixmap::fromImage(coverQImg));
     ui->cover_label_large->setPixmap(pix);
-
-
     outputCurrentInfo(current, index);
 }
 
@@ -244,7 +235,6 @@ void MainWindow::on_statusVolume_valueChanged(int value)
 void MainWindow::on_change_cover_button_clicked()
 {
     auto currentSongTag = m_tableViewer->getResult();
-
     if (currentSongTag[8].isEmpty() || currentSongTag[0].isEmpty()) {
         return;
     }
@@ -259,19 +249,31 @@ void MainWindow::on_change_cover_button_clicked()
                 "~/",
                 tr("Images (*.png *.jpg)")
         );
-
         if (!(set_image_mpeg(currentSongTag[8].toStdString().data(), file_image.toStdString().data()))) {
-            m_log->add_log_massage(currentSongTag[8] + " not writable");
+            m_log->add_log_massage(currentSongTag[8] + " not editable");
+            ui->statusbar->showMessage(currentSongTag[0] + "not editable", 2000);
         }
         ui->statusbar->showMessage(tr(file_image.toStdString().data()), 2000);
     }
-    else {
-        ui->statusbar->showMessage(tr("error cover not editible"), 2000);
+    /*
+    else if (fileType == "m4a") {
+        QString file_image = QFileDialog::getOpenFileName(
+                this,
+                tr("Open File"),
+                "~/",
+                tr("Images (*.png *.jpg)")
+        );
+        if (!(load_cover_image_m4a(currentSongTag[8].toStdString().data(), file_image.toStdString().data()))) {
+            m_log->add_log_massage(currentSongTag[8] + " not editable");
+            ui->statusbar->showMessage(currentSongTag[0] + "not editable", 2000);
+        }
+        ui->statusbar->showMessage(tr(file_image.toStdString().data()), 2000);
     }
-
+     */
+    else {
+        ui->statusbar->showMessage(tr("cover not editable"), 2000);
+    }
 }
-
-
 
 void MainWindow::on_actionlog_triggered()
 {
@@ -280,7 +282,7 @@ void MainWindow::on_actionlog_triggered()
 }
 
 
-void MainWindow::on_serarch_line_editingFinished()
+void MainWindow::on_search_line_editing_finished()
 {
     auto tmp = m_searcher->search();
 //    m_music_list.clear();

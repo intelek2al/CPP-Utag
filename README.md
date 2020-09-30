@@ -5,11 +5,11 @@ ___
     Ucode project: utag - app to read and write tags of mp3 files in c++ 
  ### Developers:
  [Mykyta Savytskyi](https://github.com/intelek2al) | 
- [Serhiy Nikolayenko](https://github.com/N-911) | 
+ [Serhiy Nikolayenko](https://github.com/N-911)
  
 
 ### Screenshots 
- ![utag main](https://drive.google.com/drive/folders/1W8UCFyABJ8dzKr74NopkM0F__qIXcczR?usp=sharing)
+ ![utag main](/app/resources/main_utag.png)
 
 ### Tech/framework used
 

@@ -66,7 +66,7 @@ private slots:
 
 //    void on_pushButton_2_clicked();
 
-    void on_serarch_line_editingFinished();
+    void on_search_line_editing_finished();
 
 private:
     Ui::MainWindow *ui;
