@@ -9,21 +9,21 @@ ___
  
 
 ### Screenshots 
-    ![utag main](https://drive.google.com/drive/folders/1W8UCFyABJ8dzKr74NopkM0F__qIXcczR?usp=sharing)
+ ![utag main](https://drive.google.com/drive/folders/1W8UCFyABJ8dzKr74NopkM0F__qIXcczR?usp=sharing)
 
 ### Tech/framework used
 
 #### 1.Built with
 
-    [CMake] (https://cmake.org)
+ [CMake](https://cmake.org)
 
 #### 2.GUI library
 
-    [Qt] (https://www.qt.io)
+ [Qt](https://www.qt.io)
 
 #### 3. External Libraries
 
-    [Taglib] (https://taglib.org)
+ [Taglib](https://taglib.org)
    
  ### Installation:
     1. git clone --recursive https://github.com/intelek2al/CPP-Utag
@@ -47,9 +47,9 @@ public:
 ### Features:
 
 ### Shortcuts
-    *Save: Cmd + S
-    *Log:  Cmd + L
-    *Quit: Cmd + Q
+* Save: Cmd + S
+* Log:  Cmd + L
+* Quit: Cmd + Q
 
 ### License
 [MIT](https://choosealicense.com/licenses/mit/)
