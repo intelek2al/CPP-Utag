@@ -47,14 +47,10 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     ui->setupUi(this);
 
     m_player = new SoundPlayer(ui);
-//    QPixmap pixmap("./app/resources/play.png");
-//    QIcon PlayIcon(pixmap);
-//    ui->playButton->setIcon(PlayIcon);
-//    ui->playButton->setIconSize(ui->playButton->size());
     ui->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     ui->pauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
     ui->stopButton->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
-
+    ui->cover_label->setWindowIcon(style()->standardIcon(QStyle::SP_FileIcon));
 
     m_tableViewer = new TableViewer(ui->tableInfoSong);
     m_dirmodel = new QFileSystemModel(this);
