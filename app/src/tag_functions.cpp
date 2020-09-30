@@ -2,7 +2,7 @@
 #include <QImage>
 #include <mp4/mp4file.h>
 #include "tag_functions.h"
-
+#define default_cover "./app/logo1.png"
 class ImageFile;
 
 /* Unsychronised lyrics/text transcription
@@ -73,8 +73,7 @@ void load_lyrics(char *file_name) {
 // deprecated!!!!!!!!!!!!
 
 QImage load_cover_image(char *file_path) {
-//    QImage coverQImg("app/logo1.png");
-    QImage coverQImg("../../app/logo1.png");
+    QImage coverQImg(default_cover);
 
     static const char *IdPicture = "APIC";  //  APIC    [#sec4.15 Attached picture]
     TagLib::MPEG::File mpegFile(file_path);
@@ -86,7 +85,6 @@ QImage load_cover_image(char *file_path) {
         Frame = id3v2tag->frameListMap()[IdPicture];
         if (!Frame.isEmpty()) {
             for (TagLib::ID3v2::FrameList::ConstIterator it = Frame.begin(); it != Frame.end(); ++it) {
-//                std::cout << "for "<< *it << std::endl;
                 PicFrame = static_cast<TagLib::ID3v2::AttachedPictureFrame * >(*it);
                 {
 //                    if (PicFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
@@ -109,7 +107,6 @@ unsigned int str_to_uint(const char* new_value) {
     std::cmatch result;
     std::string line = new_value;
     if (std::regex_match(line.c_str(), result, regular)) {
-//        std::cout << "result[0]" << result[0] << std::endl;
         res = std::stoul(result[0]);
 
     } else {
@@ -122,15 +119,7 @@ unsigned int str_to_uint(const char* new_value) {
 QVector<QString> read_tags(char *file_name, char *file_path) {
 //      0       1       2           3      4          5       6       7        8       9
 //    {"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
-//    TagLib_File *file;
     QVector<QString> data;
-
-//    file = taglib_file_new(file_path);
-//    if (file == NULL) {
-//        return data;
-//    }
-
-//    taglib_set_strings_unicode(FALSE);
 
     std::string file_n= file_name;
     std::string file_p= file_path;
@@ -171,11 +160,14 @@ QVector<QString> read_tags(char *file_name, char *file_path) {
         }
 
 //        cout << "-- TAG (properties) --" << endl;
+
+/*
         for (TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i) {
             for (TagLib::StringList::ConstIterator j = i->second.begin(); j != i->second.end(); ++j) {
                 cout << std::left << std::setw(longest) << i->first << " - " << '"' << *j << '"' << endl;
             }
         }
+        */
         if (!f.isNull() && f.audioProperties()) {
             TagLib::AudioProperties *properties = f.audioProperties();
             int seconds = properties->length() % 60;
@@ -261,7 +253,7 @@ void modify_tag_year(QVector<QString>& changes) {
     }
     catch (std::exception& ex) {
         std::cerr << ex.what();
-        changes[6] = "";
+//        changes[6] = "";
         return;
     }
     if (!f.isNull() && f.tag())
@@ -281,7 +273,7 @@ void modify_tag_track(QVector<QString>& changes) {
     }
     catch (std::exception& ex) {
         std::cerr << ex.what();
-        changes[7] = "";
+//        changes[7] = "";
         return;
     }
     if (!f.isNull() && f.tag())
@@ -296,12 +288,12 @@ void modify_tag_track(QVector<QString>& changes) {
 //{"Name", "Time", "Title", "Artist", "Genre", "Album", "Year", "Track", "Path", "Comment" };
 
 bool modify_tags(QVector<QString>& changes) {
-    if (QFile file(changes[8]); !file.isWritable()) {
+    if (QFileInfo file(changes[8]); !file.isWritable()) {
         return false;
     }
 
     TagLib::FileRef f(changes[8].toStdString().data());
-    std::cout << "line 382\n" << std::endl;
+//    std::cout << "line 382\n" << std::endl;
 
     if (!f.isNull() && f.tag())
     {
@@ -310,7 +302,7 @@ bool modify_tags(QVector<QString>& changes) {
         tag->setTitle(changes[2].toStdString());
         tag->setGenre(changes[4].toStdString());
         tag->setAlbum(changes[5].toStdString());
-//        tag->setComment(changes[9].toStdString());
+        tag->setComment(changes[9].toStdString());
     }
     f.save();
     modify_tag_year(changes);
@@ -328,17 +320,13 @@ QImage load_cover_image_mpeg(char *file_path)
     QImage image;
 
     if (l.isEmpty()) {
-        return QImage("../../app/logo1.png");
+        return QImage(default_cover);
     }
 
     TagLib::ID3v2::AttachedPictureFrame *f =
             static_cast<TagLib::ID3v2::AttachedPictureFrame *>(l.front());
 
     image.loadFromData((const uchar *) f->picture().data(), f->picture().size());
-
-//    if (image.size().width() > 200 || image.size().height() > 200) {
-//        image = image.scaled(200, 200);
-//    }
     return image;
 }
 
@@ -354,7 +342,7 @@ QImage load_cover_image_m4a(char *file_path)
     TagLib::MP4::CoverArtList coverArtList = coverItem.toCoverArtList();
 
     if (coverArtList.isEmpty()) {
-        return QImage("../../app/logo1.png");
+        return QImage(default_cover);
     }
     else
     {
@@ -399,8 +387,5 @@ bool set_image_mpeg(char *file_path, char *image_path)
     frame->setMimeType("image/jpeg");
     frame->setPicture(imageData);
     mpegFile.save();
-//    TagLib::ID3v2::AttachedPictureFrame *frame = new TagLib::ID3v2::AttachedPictureFrame;
-//    tag->addFrame(frame);
-//    audioFile.save();
     return true;
 }
