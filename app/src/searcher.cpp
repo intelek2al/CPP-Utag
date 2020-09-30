@@ -5,7 +5,6 @@ Searcher::Searcher(QLineEdit *parent, QComboBox *handler, QVector<QVector<QStrin
     : m_parent(parent),
       m_handler(handler),
       m_list(tableMusic){
-    //    connect(m_handler, QComboBox::currentIndexChanged, this, search);
 }
 
 void Searcher::setDown()

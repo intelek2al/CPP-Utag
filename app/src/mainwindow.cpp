@@ -81,6 +81,8 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
         ui->fileBrowser->hideColumn(i);
     }
     on_fileBrowser_clicked(m_dirmodel->index(m_path));
+
+    connect(ui->filterBox, SIGNAL(activated(int)), this, SLOT(on_search_line_editingFinished()));
 }
 
 MainWindow::~MainWindow()
@@ -88,7 +90,7 @@ MainWindow::~MainWindow()
     delete m_tableViewer;
     delete m_dirmodel;
     delete m_searcher;
-    system("leaks -q utag");
+//    system("leaks -q utag");
     delete ui;
 }
 
