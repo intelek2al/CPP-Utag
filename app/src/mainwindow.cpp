@@ -53,7 +53,7 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
     ui->log->setHidden(true);
     m_log = new Logger(ui);
-    m_searcher = new Searcher{ui->serarch_line, ui->filterBox, &m_music_list};
+    m_searcher = new Searcher{ui->search_line, ui->filterBox, &m_music_list};
     ui->verticalLayout_2->setAlignment(ui->cover_label_large, Qt::AlignmentFlag::AlignCenter);
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {
@@ -128,7 +128,7 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
 void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
 {
     QVector<QString> current = m_music_list[index.row()];
-    std::string fileName = m_music_list[index.row()][0].toStdString().data();
+    std::string fileName = m_music_list[index.row()][0].toStdString();
     std::string fileType = fileName.substr(fileName.size() - 3);
     QImage coverQImg;
 
@@ -282,8 +282,9 @@ void MainWindow::on_actionlog_triggered()
 }
 
 
-void MainWindow::on_search_line_editing_finished()
+void MainWindow::on_search_line_editingFinished()
 {
+//    on_fileBrowser_clicked(ui->fileBrowser->currentIndex());
     auto tmp = m_searcher->search();
 //    m_music_list.clear();
 //    std::move(tmp.begin(), tmp.end(), std::back_inserter(m_music_list));

@@ -26,7 +26,6 @@ public slots:
 
 private slots:
     void on_statusPlay_valueChanged(int value);
-
     void on_mainMusicTable_pressed(const QModelIndex &index);
 
 private:
