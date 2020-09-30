@@ -26,6 +26,8 @@
 //#define V__TRACK 7
 //#define V___COMT 8
 
+#define default_cover "./app/logo1.png"
+
 using std::cout;
 using std::endl;
 
@@ -40,7 +42,7 @@ void MainWindow::outputCurrentInfo(const QVector<QString> &current, const QModel
     m_tableViewer->setNewItems(current, index);
 }
 
-MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), m_path(sPath)
+MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -48,18 +50,27 @@ MainWindow::MainWindow(QString sPath, QWidget *parent) : QMainWindow(parent), ui
     m_tableViewer = new TableViewer(ui->tableInfoSong);
     m_dirmodel = new QFileSystemModel(this);
     m_dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
-    m_dirmodel->setRootPath(m_path);
-    ui->fileBrowser->setModel(m_dirmodel);
-    ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
+    m_dirmodel->setRootPath("~/");
     ui->log->setHidden(true);
     m_log = new Logger(ui);
+
     m_searcher = new Searcher{ui->search_line, ui->filterBox, &m_music_list};
+
+
+    if (QDir c_dir(sPath); !c_dir.exists()) {
+        m_path = "~/";
+        m_log->add_log_massage(sPath + " directory not exists");
+        ui->statusbar->showMessage(sPath + " directory not exists", 3000);
+    }
+    m_path = sPath;
+    ui->fileBrowser->setModel(m_dirmodel);
+    ui->fileBrowser->scrollTo(m_dirmodel->index(m_path));
     ui->verticalLayout_2->setAlignment(ui->cover_label_large, Qt::AlignmentFlag::AlignCenter);
     for (int i = 1; i < m_dirmodel->columnCount(); ++i)
     {
         ui->fileBrowser->hideColumn(i);
     }
-    ui->fileBrowser->setRootIndex(m_dirmodel->index(m_path));
+    on_fileBrowser_clicked(m_dirmodel->index(m_path));
 }
 
 MainWindow::~MainWindow()
@@ -76,9 +87,10 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
     QString sPath = m_dirmodel->fileInfo(index).absoluteFilePath();
     QDir current_directory(sPath);
 
-    if (!current_directory.exists())
+    if (!current_directory.isReadable())
     {
-        std::cout << "dir not opend" << std::endl;
+        m_log->add_log_massage(sPath + " directory not readable");
+        ui->statusbar->showMessage(sPath + " directory not readable", 3000);
     };
 
     current_directory.setFilter(QDir::NoDotAndDotDot | QDir::Files);
@@ -103,6 +115,7 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
         QFileInfo fileInfo = list.at(i);
         if (!fileInfo.isReadable()) {
             m_log->add_log_massage(fileInfo.fileName() + " not readable");
+            ui->statusbar->showMessage(fileInfo.fileName()  + " not readable", 3000);
             continue;
         }
         QVector<QString> tmp;
@@ -143,7 +156,8 @@ void MainWindow::on_mainMusicTable_clicked(const QModelIndex &index)
     else {
         ui->statusbar->showMessage(tr(" cover is unsupported"), 200);
         m_log->add_log_massage(m_music_list[index.row()][0] + " cover is unsupported");
-        coverQImg = QImage("../../app/logo1.png");
+//        coverQImg = QImage("../../app/logo1.png");
+        coverQImg = QImage(default_cover);
     }
     QPixmap pix(QPixmap::fromImage(coverQImg));
     ui->cover_label_large->setPixmap(pix);
@@ -158,6 +172,7 @@ void MainWindow::on_pushButton_clicked()
         return;
     }
     if (!(modify_tags(newSongTag))) {
+        ui->statusbar->showMessage(newSongTag[8] + " is not writable", 200);
         m_log->add_log_massage(newSongTag[8] + " is not writable");
     }
 
@@ -195,7 +210,8 @@ void MainWindow::on_mainMusicTable_doubleClicked(const QModelIndex &index)
     }
     else {
         ui->statusbar->showMessage(tr(" cover is unsupported." ), 200);
-        coverQImg = QImage("../../app/logo1.png");
+//        coverQImg = QImage("../../app/logo1.png");  // Clion
+        coverQImg = QImage("./app/logo1.png");  // zsh
     }
 
     QPixmap pix(QPixmap::fromImage(coverQImg));
