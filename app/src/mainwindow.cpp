@@ -102,10 +102,6 @@ void MainWindow::readDir(const QModelIndex &index) {
     //    current_directory.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     //    current_directory.setSorting(QDir::Size | QDir::Reversed);
 
-    if (!m_tableModel)
-        delete m_tableModel;
-    m_tableModel = new MusicTableModel(ui->mainMusicTable);
-
     QFileInfoList list = current_directory.entryInfoList();
 
     m_music_list.clear();
@@ -137,6 +133,9 @@ void MainWindow::on_fileBrowser_clicked(const QModelIndex &index)
 {
     readDir(index);
 
+    if (!m_tableModel)
+        delete m_tableModel;
+    m_tableModel = new MusicTableModel(ui->mainMusicTable);
     m_searcher->setDown();
     m_tableModel->music_list_add(m_music_list);
     ui->mainMusicTable->setModel(m_tableModel);
@@ -304,11 +303,8 @@ void MainWindow::on_actionlog_triggered()
 
 void MainWindow::on_search_line_editingFinished()
 {
-//    on_fileBrowser_clicked(ui->fileBrowser->currentIndex());
     readDir(ui->fileBrowser->currentIndex());
     auto tmp = m_searcher->search();
-//    m_music_list.clear();
-//    std::move(tmp.begin(), tmp.end(), std::back_inserter(m_music_list));
     m_music_list = tmp;
     if (!m_tableModel)
         delete m_tableModel;
