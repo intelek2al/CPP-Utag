@@ -286,21 +286,6 @@ void MainWindow::on_change_cover_button_clicked()
         }
         ui->statusbar->showMessage(tr(file_image.toStdString().data()), 2000);
     }
-    /*
-    else if (fileType == "m4a") {
-        QString file_image = QFileDialog::getOpenFileName(
-                this,
-                tr("Open File"),
-                "~/",
-                tr("Images (*.png *.jpg)")
-        );
-        if (!(load_cover_image_m4a(currentSongTag[8].toStdString().data(), file_image.toStdString().data()))) {
-            m_log->add_log_massage(currentSongTag[8] + " not editable");
-            ui->statusbar->showMessage(currentSongTag[0] + "not editable", 2000);
-        }
-        ui->statusbar->showMessage(tr(file_image.toStdString().data()), 2000);
-    }
-     */
     else {
         ui->statusbar->showMessage(tr("cover not editable"), 2000);
     }
