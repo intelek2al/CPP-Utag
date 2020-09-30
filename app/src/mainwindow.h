@@ -79,6 +79,7 @@ private:
     Logger *m_log;
     Searcher *m_searcher;
 
+    void readDir(const QModelIndex &index);
     void setMusicPlay(QString soundPath);
     void outputCurrentInfo(const QVector<QString> &current, const QModelIndex &index);
 };

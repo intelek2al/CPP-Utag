@@ -3,7 +3,7 @@
 
 #include <QTableWidgetItem>
 
-#define TAG_SIZE 9
+#define TAG_SIZE 10
 
 class TableViewer
 {
