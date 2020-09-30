@@ -8,32 +8,32 @@ ___
  [Serhiy Nikolayenko](https://github.com/N-911) | 
  
 
-###Screenshots 
+### Screenshots 
 ![imagename](TargetUrl)
 
-###Tech/framework used
+### Tech/framework used
 
 #### 1.Built with
 
-    cmake
+[CMake] (https://cmake.org)
 
 #### 2.GUI library
 
-    Qt
+[Qt] (https://www.qt.io)
 
 #### 3. External Libraries
 
-    taglib
+[Taglib] (https://taglib.org)
+   
 
- ###Installation:
- 1. git clone --recursive https://github.com/intelek2al/CPP-Utag
- 2. cmake . -Bbuild -Wdev -Werror=dev && cmake --build ./build
+ ### Installation:
+    1. git clone --recursive https://github.com/intelek2al/CPP-Utag
+    2. cmake . -Bbuild -Wdev -Werror=dev && cmake --build ./build
  
- ###How to use?
+ ### How to use?
+    ./build/app/utag [directory]
  
- ./build/app/utag [directory]
- 
- ###Code
+ ### Code
  
  ```c++
 class MainWindow : public QMainWindow
@@ -45,19 +45,14 @@ public:
     ~MainWindow() override;
 
  ```
- ###Features:
+### Features:
 
-###Shortcuts
-
-*Save: Cmd + S
-
-*Quit: Cmd + Q
+### Shortcuts
+    *Save: Cmd + S
+    *Quit: Cmd + Q
 
 ### License
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ---
 
-https://medium.com/@saumya.ranjan/how-to-write-a-readme-md-file-markdown-file-20cb7cbcd6f
-
-https://developer.apple.com/design/human-interface-guidelines/macos/overview/themes/
