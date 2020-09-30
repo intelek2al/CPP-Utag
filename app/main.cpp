@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     MainWindow window((QString(argv[1])));
     window.show();
-    system("leaks -q utag");
+//    system("leaks -q utag");
 
     return app.exec();
 }
